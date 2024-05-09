@@ -1,11 +1,11 @@
 # image will be published to ghcr.io/<user>/<name>
-name: quantix
+name: quantix-os
 # description will be included in the image's metadata
-description: This is my personal OS image.
+description: Bazzite for developers and power users.
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/silverblue-main
-image-version: 40 # latest is also supported if you want new updates ASAP
+base-image: ghcr.io/ublue-os/bazzite
+image-version: stable # latest is also supported if you want new updates ASAP
 
 # module configuration, executed in order
 # you can include multiple instances of the same module
