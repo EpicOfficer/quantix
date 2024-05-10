@@ -30,4 +30,4 @@ modules:
       install:
         - com.brave.Browser
 
-  - type: signingcd
+  - type: signing
