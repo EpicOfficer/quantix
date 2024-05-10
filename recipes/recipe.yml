@@ -20,4 +20,14 @@ modules:
       enabled:
         - libvirtd
 
-  - type: signing
+  - type: script
+    snippets:
+      - "wget -qO- https://git.io/papirus-icon-theme-install | sh"
+
+  - type: default-flatpaks
+    notify: true
+    user:
+      install:
+        - com.brave.Browser
+
+  - type: signingcd
