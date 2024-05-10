@@ -16,8 +16,12 @@ modules:
       - qemu
 
   - type: systemd
+    user:
+      enabled:
+        - quantix-user-setup
     system:
       enabled:
+        - quantix-system-setup
         - libvirtd
 
   - type: script
