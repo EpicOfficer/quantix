@@ -9,7 +9,7 @@ elif [ "$(whoami)" = "sddm" ]; then
 fi
 
 # Script version
-readonly QNTX_VER=1
+readonly QNTX_VER=2
 readonly QNTX_VER_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""
