@@ -21,8 +21,4 @@ modules:
       enabled:
         - libvirtd
 
-  - type: script
-    scripts:
-    - setup_vfio.sh
-
   - type: signing
