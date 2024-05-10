@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+if ! grep -q "input" /etc/group; then
+    bash -c 'grep "input" /lib/group >> /etc/group'
+fi
+usermod -a -G input $USER
+
+if ! grep -q "libvirt" /etc/group; then
+    bash -c 'grep "libvirt" /lib/group >> /etc/group'
+fi
+usermod -a -G libvirt $USER

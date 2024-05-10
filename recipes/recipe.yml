@@ -23,6 +23,7 @@ modules:
   - type: script
     snippets:
       - "wget -qO- https://git.io/papirus-icon-theme-install | sh"
+      - "sed -i '/^PRETTY_NAME/s/Bazzite/Quantix/' /usr/lib/os-release"
 
   - type: default-flatpaks
     notify: true

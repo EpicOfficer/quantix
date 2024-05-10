@@ -1,0 +1,12 @@
+[Unit]
+Description=Configure quantix system
+After=rpm-ostreed.service tuned.service
+Before=systemd-user-sessions.service jupiter-biosupdate.service jupiter-controller-update.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/quantix-system-setup
+
+[Install]
+WantedBy=multi-user.target
