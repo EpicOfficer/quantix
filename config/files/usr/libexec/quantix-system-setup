@@ -47,19 +47,19 @@ else
 fi
 
 # Add users to libvirt and input groups
-GROUPS="input libvirt"
+QNTXGROUPS="input libvirt"
 
-for USER in $(ls /home)
+for QNTXUSER in $(ls /home)
 do
-    for GROUP in $GROUPS
+    for QNTXGROUP in $QNTXGROUPS
     do
         # if group does not exist, create it
-        if ! grep -q "^$GROUP:" /etc/group; then
-            groupadd $GROUP
+        if ! grep -q "^$QNTXGROUP:" /etc/group; then
+            groupadd $QNTXGROUP
         fi
         # if user is not in group, add them
-        if ! id -nG "$USER" | grep -qw "$GROUP"; then
-            usermod -a -G $GROUP $USER
+        if ! id -nG "$QNTXUSER" | grep -qw "$QNTXGROUP"; then
+            usermod -a -G $QNTXGROUP $QNTXUSER
         fi
     done
 done
