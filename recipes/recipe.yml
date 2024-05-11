@@ -9,6 +9,10 @@ modules:
     files:
       - usr: /usr
 
+  - type: script
+    scripts:
+      - image-info.sh
+
   - type: rpm-ostree
     install:
       - virt-manager
