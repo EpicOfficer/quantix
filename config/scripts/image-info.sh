@@ -7,11 +7,7 @@ IMAGE_VENDOR="epicofficer"
 IMAGE_NAME="quantix-os"
 IMAGE_INFO="/usr/share/quantix-os/image-info.json"
 IMAGE_REF="ostree-image-signed:docker://ghcr.io/$IMAGE_VENDOR/$IMAGE_NAME"
-IMAGE_BRANCH_NORMALIZED=$IMAGE_BRANCH
-
-if [[ $IMAGE_BRANCH_NORMALIZED == "main" ]]; then
-  IMAGE_BRANCH_NORMALIZED="stable"
-fi
+IMAGE_BRANCH_NORMALIZED="stable"
 
 case $FEDORA_MAJOR_VERSION in
   39|40)
