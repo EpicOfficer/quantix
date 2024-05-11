@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Script version
-readonly QNTX_VER=2
+readonly QNTX_VER=3
 readonly QNTX_VER_DIR="/etc/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""
@@ -47,15 +47,15 @@ else
 fi
 
 # Add users to libvirt and input groups
-QNTXGROUPS="input libvirt"
+QNTXGROUPS="plugdev input libvirt"
 
 for QNTXUSER in $(ls /home)
 do
     for QNTXGROUP in $QNTXGROUPS
     do
         # if group does not exist, create it
-        if ! grep -q "^$QNTXGROUP:" /etc/group; then
-            groupadd $QNTXGROUP
+        if ! grep -q "$QNTXGROUP" /etc/group; then
+            bash -c "grep \"$QNTXGROUP\" /lib/group >> /etc/group"
         fi
         # if user is not in group, add them
         if ! id -nG "$QNTXUSER" | grep -qw "$QNTXGROUP"; then
