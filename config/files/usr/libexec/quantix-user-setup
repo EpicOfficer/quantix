@@ -9,7 +9,7 @@ elif [ "$(whoami)" = "sddm" ]; then
 fi
 
 # Script version
-readonly QNTX_VER=2
+readonly QNTX_VER=3
 readonly QNTX_VER_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""
@@ -26,15 +26,13 @@ if [[ -n "${QNTX_VER_RAN}" && "${QNTX_VER}" == "${QNTX_VER_RAN}" ]]; then
     exit 0
 fi
 
-# Handle privileged tasks
-pkexec /usr/libexec/quantix-privileged-user-setup "$USER"
-
 # Set ptyxis opacity to 1 by default
 raw="$(gsettings get org.gnome.Ptyxis profile-uuids)"
 uuids="$(sed -En 's|[^0-9a-z]*||g; s|([0-9a-z]{32})|\1\n|gp' <<<${raw})"
 for i in ${uuids}; do
   location="org.gnome.Ptyxis.Profile:/org/gnome/Ptyxis/Profiles/${i}/"
-  gsettings set "${location}" opacity "1"; done
+  gsettings set "${location}" opacity "1" && \
+  gsettings set "${location}" palette "dracula"; done
 
 # Write the version
 echo "${QNTX_VER}" > "${QNTX_VER_FILE}" || { echo "Error writing to ${QNTX_VER_FILE}." >&2; exit 1; }

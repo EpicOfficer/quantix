@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Script version
-readonly QNTX_VER=1
+readonly QNTX_VER=2
 readonly QNTX_VER_DIR="/etc/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""
@@ -45,6 +45,24 @@ else
     --append-if-missing="vfio_pci.disable_vga=1" \
     --reboot || exit 1
 fi
+
+# Add users to libvirt and input groups
+GROUPS="input libvirt"
+
+for USER in $(ls /home)
+do
+    for GROUP in $GROUPS
+    do
+        # if group does not exist, create it
+        if ! grep -q "^$GROUP:" /etc/group; then
+            groupadd $GROUP
+        fi
+        # if user is not in group, add them
+        if ! id -nG "$USER" | grep -qw "$GROUP"; then
+            usermod -a -G $GROUP $USER
+        fi
+    done
+done
 
 # Write the version
 echo "${QNTX_VER}" > "${QNTX_VER_FILE}" || { echo "Error writing to ${QNTX_VER_FILE}." >&2; exit 1; }
