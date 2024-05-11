@@ -21,12 +21,12 @@ esac
 cat > $IMAGE_INFO <<EOF
 {
   "image-name": "$IMAGE_NAME",
-  "image-flavor": "$IMAGE_FLAVOR",
+  "image-flavor": "Developer Edition",
   "image-vendor": "$IMAGE_VENDOR",
   "image-ref": "$IMAGE_REF",
   "image-tag": "$IMAGE_TAG",
   "image-branch": "$IMAGE_BRANCH_NORMALIZED",
-  "base-image-name": "$BASE_IMAGE_NAME",
+  "base-image-name": "Bazzite",
   "fedora-version": "$FEDORA_MAJOR_VERSION"
 }
 EOF
