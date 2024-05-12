@@ -24,13 +24,13 @@ modules:
       - code
       - containerd.io
       - devpod
-			- docker-ce
-			- docker-ce-cli
-			- docker-buildx-plugin
-			- docker-compose-plugin
+      - docker-ce
+      - docker-ce-cli
+      - docker-buildx-plugin
+      - docker-compose-plugin
       - podman-compose
-		  - podman-tui
-			- podmansh
+      - podman-tui
+      - podmansh
 
   - type: systemd
     user:
