@@ -8,6 +8,7 @@ modules:
   - type: files
     files:
       - usr: /usr
+      - etc: /etc
 
   - type: script
     snippets:
