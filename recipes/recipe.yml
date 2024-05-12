@@ -18,7 +18,7 @@ modules:
       - virt-manager
       - edk2-ovmf
       - qemu
-      - libxpresent
+      - libXpresent
 
   - type: systemd
     user:
