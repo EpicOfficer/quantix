@@ -47,7 +47,7 @@ else
 fi
 
 # Add users to libvirt and input groups
-QNTXGROUPS="plugdev input libvirt"
+QNTXGROUPS="plugdev input libvirt docker"
 
 for QNTXUSER in $(ls /home)
 do
