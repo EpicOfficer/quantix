@@ -22,8 +22,6 @@ modules:
       - qemu
       - libXpresent
       - code
-      - containerd.io
-      - devpod
       - docker-ce
       - docker-ce-cli
       - docker-buildx-plugin
