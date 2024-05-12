@@ -32,6 +32,8 @@ modules:
     snippets:
       - "wget -qO- https://git.io/papirus-icon-theme-install | sh"
       - "sed -i '/^PRETTY_NAME/s/Bazzite/Quantix/' /usr/lib/os-release"
+      - "sed -i 's/bazzite_logo.svgz/quantix_logo.svgz/g' /usr/share/plasma/look-and-feel/com.valve.vapor.desktop/contents/splash/Splash.qml"
+      - "sed -i 's/bazzite_logo.svgz/quantix_logo.svgz/g' /usr/share/plasma/look-and-feel/com.valve.vgui.desktop/contents/splash/Splash.qml"
 
   - type: default-flatpaks
     notify: true
