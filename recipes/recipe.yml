@@ -19,16 +19,7 @@ modules:
   - type: rpm-ostree
     install:
       - virt-manager
-      - virt-viewer
       - edk2-ovmf
-      - qemu-char-spice
-      - qemu-device-display-virtio-gpu
-      - qemu-device-display-virtio-vga
-      - qemu-device-usb-redirect
-      - qemu-img
-      - qemu-system-x86-core
-      - qemu-user-binfmt
-      - qemu-user-static
       - qemu
       - libXpresent
       - code
@@ -41,7 +32,6 @@ modules:
       - podmansh
       - nerd-fonts
       - adobe-source-code-pro-fonts
-      - cascadia-code-fonts
       - google-droid-sans-mono-fonts
       - jetbrains-mono-fonts-all
 
