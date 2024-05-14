@@ -42,12 +42,8 @@ modules:
       - nerd-fonts
       - adobe-source-code-pro-fonts
       - cascadia-code-fonts
-      - genisoimage
       - google-droid-sans-mono-fonts
-      - google-go-mono-fonts
-      - ibm-plex-mono-fonts
       - jetbrains-mono-fonts-all
-      - mozilla-fira-mono-fonts
 
   - type: systemd
     user:
