@@ -5,7 +5,12 @@ DefaultProfile=Dracula.profile
 ConfigVersion=1
 
 [MainWindow]
+MenuBar=Disabled
 ToolBarsMovable=Disabled
 
 [UiSettings]
 ColorScheme=
+
+[FileLocation]
+scrollbackUseCacheLocation=true
+scrollbackUseSystemLocation=false
