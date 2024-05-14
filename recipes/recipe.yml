@@ -30,8 +30,6 @@ modules:
       - podman-compose
       - podman-tui
       - podmansh
-      - nerd-fonts
-      - jetbrains-mono-fonts-all
 
   - type: systemd
     user:
