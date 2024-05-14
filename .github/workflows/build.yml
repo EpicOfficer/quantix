@@ -24,7 +24,16 @@ jobs:
           # !! Add your recipes here 
           - recipe.yml
     steps:
-       # the build is fully handled by the reusable github action
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 512
+          swap-size-mb: 1024
+          remove-dotnet: 'true'
+      - name: Free
+        run: |
+          echo "Free space:"
+          df -h
       - name: Build Custom Image
         uses: blue-build/github-action@v1.5
         with:
