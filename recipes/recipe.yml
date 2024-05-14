@@ -52,4 +52,8 @@ modules:
       install:
         - com.brave.Browser
 
+  - type: bling
+    install:
+      - dconf-update-service # a service unit that updates the dconf db on boot
+
   - type: signing
