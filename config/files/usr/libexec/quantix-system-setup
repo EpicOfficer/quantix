@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Script version
-readonly QNTX_VER=4
+readonly QNTX_VER=5
 readonly QNTX_VER_DIR="/etc/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""
@@ -46,17 +46,19 @@ else
     --reboot || exit 1
 fi
 
-# Add users to libvirt and input groups
+# Add wheel users to appropriate groups
 QNTXGROUPS="plugdev input libvirt docker"
+wheelarray=($(getent group wheel | cut -d ":" -f 4 | tr  ',' '\n'))
 
-for QNTXUSER in $(ls /home)
+for QNTXGROUP in $QNTXGROUPS
 do
-    for QNTXGROUP in $QNTXGROUPS
+    # if group does not exist, create it
+    if ! grep -q "$QNTXGROUP" /etc/group; then
+        bash -c "grep \"$QNTXGROUP\" /lib/group >> /etc/group"
+    fi
+
+    for QNTXUSER in $wheelarray
     do
-        # if group does not exist, create it
-        if ! grep -q "$QNTXGROUP" /etc/group; then
-            bash -c "grep \"$QNTXGROUP\" /lib/group >> /etc/group"
-        fi
         # if user is not in group, add them
         if ! id -nG "$QNTXUSER" | grep -qw "$QNTXGROUP"; then
             usermod -a -G $QNTXGROUP $QNTXUSER
