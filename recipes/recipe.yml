@@ -31,8 +31,6 @@ modules:
       - podman-tui
       - podmansh
       - nerd-fonts
-      - adobe-source-code-pro-fonts
-      - google-droid-sans-mono-fonts
       - jetbrains-mono-fonts-all
 
   - type: systemd

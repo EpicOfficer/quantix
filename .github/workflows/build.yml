@@ -12,7 +12,7 @@ on:
 jobs:
   bluebuild:
     name: Build Custom Image
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -24,10 +24,6 @@ jobs:
           # !! Add your recipes here 
           - recipe.yml
     steps:
-      - name: Free space
-        run: |
-          echo "Free space:"
-          df -h
       - name: Build Custom Image
         uses: blue-build/github-action@v1.5
         with:
