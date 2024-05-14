@@ -30,3 +30,5 @@ cat > $IMAGE_INFO <<EOF
   "fedora-version": "$FEDORA_MAJOR_VERSION"
 }
 EOF
+
+sysctl -p
