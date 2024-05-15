@@ -1,14 +1,3 @@
-[org/gnome/Ptyxis]
-audible-bell=false
-default-profile-uuid='2871e8027773ae74d6c87a5f659bbc74'
-profile-uuids=['2871e8027773ae74d6c87a5f659bbc74']
-restore-session=false
-restore-window-size=false
-
-[org/gnome/Ptyxis/Profiles/2871e8027773ae74d6c87a5f659bbc74]
-opacity=1.0
-palette='dracula'
-
 [org/gnome/desktop/interface]
 color-scheme='prefer-dark'
 cursor-size=24
