@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Script version
-readonly QNTX_VER=5
+readonly QNTX_VER=6
 readonly QNTX_VER_DIR="/etc/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""

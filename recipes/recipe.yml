@@ -282,4 +282,8 @@ modules:
     install:
       - dconf-update-service # a service unit that updates the dconf db on boot
 
+  - type: files
+    files:
+      - overrides: /
+
   - type: signing
