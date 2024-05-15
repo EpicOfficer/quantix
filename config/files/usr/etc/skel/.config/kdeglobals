@@ -1,5 +1,6 @@
 [KDE]
-LookAndFeelPackage=com.valve.vapor.desktop
+LookAndFeelPackage=org.kde.breezedark.desktop
+widgetStyle=Breeze
 SingleClick=false
 
 [General]
@@ -19,4 +20,4 @@ Theme=Papirus-Dark
 # However we cannot ship this file anymore since upstream konsole ships now this file
 # https://gitlab.steamos.cloud/jupiter/tasks/-/issues/854
 [Desktop Entry]
-DefaultProfile=Vapor.profile
+DefaultProfile=Dracula.profile
