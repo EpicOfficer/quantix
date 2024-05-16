@@ -1,6 +1,5 @@
 [Unit]
 Description=Configure quantix system for current user
-After=bazzite-user-setup.service
 
 [Service]
 Type=simple
