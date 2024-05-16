@@ -43,7 +43,6 @@ curl -Lo /etc/yum.repos.d/_copr_matte-schwartz-sunshine.repo https://copr.fedora
 curl -Lo /etc/yum.repos.d/_copr_rok-cdemu.repo https://copr.fedorainfracloud.org/coprs/rok/cdemu/repo/fedora-"${FEDORA_MAJOR_VERSION}"/rok-cdemu-fedora-"${FEDORA_MAJOR_VERSION}".rep
 curl -Lo /etc/yum.repos.d/_copr_rodoma92-kde-cdemu-manager.repo https://copr.fedorainfracloud.org/coprs/rodoma92/kde-cdemu-manager/repo/fedora-"${FEDORA_MAJOR_VERSION}"/rodoma92-kde-cdemu-manager-fedora-"${FEDORA_MAJOR_VERSION}".repo
 curl -Lo /etc/yum.repos.d/_copr_rodoma92-rmlint.repo https://copr.fedorainfracloud.org/coprs/rodoma92/rmlint/repo/fedora-"${FEDORA_MAJOR_VERSION}"/rodoma92-rmlint-fedora-"${FEDORA_MAJOR_VERSION}".repo
-ostree container commit
 
 # Install kernel-fsync
 rpm-ostree cliwrap install-to-root /
@@ -59,7 +58,6 @@ rpm-ostree override replace \
     kernel-uki-virt \
     kernel-headers \
     kernel-devel
-ostree container commit
 
 # Setup firmware
 mkdir -p /tmp/mediatek-firmware
@@ -95,6 +93,5 @@ xz --check=crc32 /tmp/linux-firmware-galileo/*
 mv -vf /tmp/linux-firmware-galileo/* /usr/lib/firmware/qca/
 rm -rf /tmp/linux-firmware-galileo
 rm -rf /usr/share/alsa/ucm2/conf.d/acp5x/Valve-Jupiter-1.conf
-ostree container commit
 
 sysctl -p

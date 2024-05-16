@@ -221,6 +221,10 @@ modules:
       - gamemode
       - plasma-welcome
 
+  - type: files
+    files:
+      - overrides: /
+
   - type: script
     scripts:
       - configure.sh
@@ -256,7 +260,7 @@ modules:
       - finalise.sh
 
   - type: default-flatpaks
-    notify: true
+    notify: false
     user:
       install:
         - com.brave.Browser
@@ -277,13 +281,5 @@ modules:
         - com.obsproject.Studio.Plugin.OBSVkCapture
         - com.obsproject.Studio.Plugin.Gstreamer
         - com.obsproject.Studio.Plugin.GStreamerVaapi
-
-  - type: bling
-    install:
-      - dconf-update-service # a service unit that updates the dconf db on boot
-
-  - type: files
-    files:
-      - overrides: /
 
   - type: signing

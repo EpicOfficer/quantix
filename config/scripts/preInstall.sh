@@ -30,7 +30,6 @@ rpm-ostree override replace --experimental --from repo=updates cups-libs || true
 rpm-ostree override replace --experimental --from repo=updates libinput || true
 rpm-ostree override replace --experimental --from repo=updates libopenmpt || true
 rpm-ostree override remove glibc32 || true
-ostree container commit
 
 # Install Valve's patched Mesa, Pipewire, and Xwayland
 # Install patched switcheroo control with proper discrete GPU support
@@ -56,4 +55,3 @@ rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfraclou
 rpm-ostree install \
   mesa-va-drivers-freeworld \
   mesa-vdpau-drivers-freeworld.x86_64
-ostree container commit
