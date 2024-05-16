@@ -1,8 +1,8 @@
 name: quantix-os
 description: Bazzite for developers and power users.
 
-base-image: ghcr.io/ublue-os/bazzite
-image-version: stable
+base-image: ghcr.io/ublue-os/kinoite-main
+image-version: latest
 
 modules:
   - type: files
@@ -14,8 +14,83 @@ modules:
     scripts:
       - setup.sh
 
+  - type: akmods
+    base: fsync
+    install:
+      - kvmfr
+      - xpadneo
+      - xone
+      - openrazer
+      - v4l2loopback
+      - wl
+      - gcadapter_oc
+      - nct6687d
+      - evdi
+      - zenergy
+      - ayaneo-platform
+      - ayn-platform
+      - bmi260
+      - ryzen-smu
+      - vhba
+
+  - type: script
+    scripts:
+      - preInstall.sh
+
   - type: rpm-ostree
     install:
+      - python3-pip
+      - libadwaita
+      - duperemove
+      - sqlite
+      - xwininfo
+      - xrandr
+      - compsize
+      - input-remapper
+      - system76-scheduler
+      - powertop
+      - i2c-tools
+      - udica
+      - ladspa-caps-plugins
+      - ladspa-noise-suppression-for-voice
+      - python3-icoextract
+      - webapp-manager
+      - btop
+      - fish
+      - lshw
+      - xdotool
+      - wmctrl
+      - libcec
+      - yad
+      - f3
+      - pulseaudio-utils
+      - unrar
+      - lzip 
+      - libxcrypt-compat
+      - mesa-libGLU
+      - vulkan-tools
+      - glibc.i686
+      - extest.i686
+      - xwiimote-ng
+      - twitter-twemoji-fonts
+      - google-noto-sans-cjk-fonts
+      - lato-fonts
+      - fira-code-fonts
+      - nerd-fonts
+      - fastfetch
+      - glow
+      - gum
+      - vim
+      - zoxide
+      - setools
+      - setroubleshoot
+      - cockpit-networkmanager
+      - cockpit-podman
+      - cockpit-selinux
+      - cockpit-system
+      - cockpit-navigator
+      - cockpit-storaged
+      - lsb_release
       - virt-manager
       - edk2-ovmf
       - qemu
@@ -29,31 +104,183 @@ modules:
       - podman-tui
       - podmansh
       - papirus-icon-theme
+    remove:
+      - ublue-os-update-services
+      - firefox
+      - firefox-langpacks
+      - htop
+
+  - type: script
+    snippets:
+      - pip install --prefix=/usr topgrade
+
+  - type: rpm-ostree
+    install:
+      - ublue-update
+
+  - type: script
+    snippets:
+      - mkdir -p /usr/etc/xdg/autostart
+      - echo "X-GNOME-Autostart-enabled=false" >> /usr/etc/xdg/autostart/sealertauto.desktop
+      - sed -i '1s/^/[include]\npaths = ["\/etc\/ublue-os\/topgrade.toml"]\n\n/' /usr/share/ublue-update/topgrade-user.toml
+      - sed -i 's/min_battery_percent.*/min_battery_percent = 20.0/' /usr/etc/ublue-update/ublue-update.toml
+      - sed -i 's/max_cpu_load_percent.*/max_cpu_load_percent = 100.0/' /usr/etc/ublue-update/ublue-update.toml
+      - sed -i 's/max_mem_percent.*/max_mem_percent = 90.0/' /usr/etc/ublue-update/ublue-update.toml
+      - sed -i 's/dbus_notify.*/dbus_notify = false/' /usr/etc/ublue-update/ublue-update.toml
+      - curl -Lo /usr/bin/installcab https://raw.githubusercontent.com/KyleGospo/steam-proton-mf-wmv/master/installcab.py
+      - chmod +x /usr/bin/installcab
+      - curl -Lo /usr/bin/install-mf-wmv https://github.com/KyleGospo/steam-proton-mf-wmv/blob/master/install-mf-wmv.sh
+      - chmod +x /usr/bin/install-mf-wmv
+      - curl -Lo /usr/share/thumbnailers/exe-thumbnailer.thumbnailer https://raw.githubusercontent.com/jlu5/icoextract/master/exe-thumbnailer.thumbnailer
+
+  - type: rpm-ostree
+    install:
+      - jupiter-sd-mounting-btrfs
+      - at-spi2-core.i686
+      - atk.i686
+      - vulkan-loader.i686
+      - alsa-lib.i686
+      - fontconfig.i686
+      - gtk2.i686
+      - libICE.i686
+      - libnsl.i686
+      - libxcrypt-compat.i686
+      - libpng12.i686
+      - libXext.i686
+      - libXinerama.i686
+      - libXtst.i686
+      - libXScrnSaver.i686
+      - NetworkManager-libnm.i686
+      - nss.i686
+      - pulseaudio-libs.i686
+      - libcurl.i686
+      - systemd-libs.i686
+      - libva.i686
+      - libvdpau.i686
+      - libdbusmenu-gtk3.i686
+      - libatomic.i686
+      - pipewire-alsa.i686
+      - clinfo
+
+  - type: script
+    snippets:
+      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/fedora-updates.repo"
+
+  - type: rpm-ostree
+    install:
+      - mesa-vulkan-drivers.i686
+      - mesa-va-drivers-freeworld.i686
+      - mesa-vdpau-drivers-freeworld.i686
+
+  - type: script
+    snippets:
+      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-steam.repo"
+      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree.repo"
+      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo"
+      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo"
+
+  - type: rpm-ostree
+    install:
+      - steam
+  
+  - type: script
+    snippets:
+      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-steam.repo"
+      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree.repo"
+      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo"
+      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo"
+      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/fedora-updates.repo"
+  
+  - type: rpm-ostree
+    install:
+      - lutris
+      - fluidsynth
+      - fluid-soundfont-gm
+      - qsynth
+      - wxGTK
+      - libFAudio
+      - wine-core.x86_64
+      - wine-core.i686
+      - wine-pulseaudio.x86_64
+      - wine-pulseaudio.i686
+      - winetricks
+      - protontricks
+      - latencyflex-vulkan-layer
+      - vkBasalt.x86_64
+      - vkBasalt.i686
+      - mangohud.x86_64
+      - mangohud.i686
+      - vk_hdr_layer.x86_64
+      - vk_hdr_layer.i686
+      - qt
+      - kdeconnectd
+      - kdeplasma-addons
+      - rom-properties-kf6
+      - joystickwake
+    remove:
+      - gamemode
+      - plasma-welcome
+
+  - type: files
+    files:
+      - overrides: /
+
+  - type: script
+    scripts:
+      - configure.sh
 
   - type: systemd
     user:
       enabled:
         - quantix-user-setup
+        - podman
+        - systemd-tmpfiles-setup
+        - com.system76.Scheduler.dbusproxy
     system:
       enabled:
+        - com.system76.Scheduler
+        - btrfs-dedup@var-home.timer
+        - displaylink
+        - input-remapper
+        - ublue-update.timer
+        - gamescope-workaround
+        - waydroid-workaround
+        - dev-hugepages1G.mount
         - quantix-system-setup
+        - quantix-flatpak-setup
         - docker.socket
-        - podman.socket
         - swtpm-workaround
         - libvirtd
+        - kde-sysmonitor-workaround
+      disabled:
+        - rpm-ostreed-automatic
+        - waydroid-container.service 
 
   - type: script
     scripts:
       - finalise.sh
 
   - type: default-flatpaks
-    notify: true
-    user:
+    notify: false
+    system:
       install:
         - com.brave.Browser
-
-  - type: bling
-    install:
-      - dconf-update-service # a service unit that updates the dconf db on boot
+        - org.kde.gwenview
+        - org.kde.okular
+        - org.kde.kcalc
+        - org.kde.haruna
+        - org.kde.filelight
+        - io.github.fastrizwaan.WineZGUI
+        - io.github.dvlv.boxbuddyrs
+        - it.mijorus.gearlever
+        - com.github.tchx84.Flatseal
+        - io.github.flattool.Warehouse
+        - net.davidotek.pupgui2
+        - org.freedesktop.Platform.VulkanLayer.MangoHud//23.08
+        - org.freedesktop.Platform.VulkanLayer.vkBasalt//23.08
+        - org.freedesktop.Platform.VulkanLayer.OBSVkCapture//23.08
+        - com.obsproject.Studio.Plugin.OBSVkCapture
+        - com.obsproject.Studio.Plugin.Gstreamer
+        - com.obsproject.Studio.Plugin.GStreamerVaapi
 
   - type: signing

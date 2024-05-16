@@ -9,7 +9,7 @@ elif [ "$(whoami)" = "sddm" ]; then
 fi
 
 # Script version
-readonly QNTX_VER=4
+readonly QNTX_VER=8
 readonly QNTX_VER_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""
@@ -26,11 +26,19 @@ if [[ -n "${QNTX_VER_RAN}" && "${QNTX_VER}" == "${QNTX_VER_RAN}" ]]; then
     exit 0
 fi
 
-# Keep konsole because I like it :P
-mkdir -p $HOME/.local/share/applications
-rm -f $HOME/.local/share/applications/org.kde.konsole.desktop
-cp /usr/share/applications/org.kde.konsole.desktop $HOME/.local/share/applications/org.kde.konsole.desktop
-sed -i '/NoDisplay=true/d' $HOME/.local/share/applications/org.kde.konsole.desktop
+# Enable Flathub
+flatpak remote-add --if-not-exists --user flathub /usr/etc/flatpak/remotes.d/flathub.flatpakrepo
+flatpak remote-modify --user --enable flathub
+
+# Refresh fontconfig
+if [[ -f "$HOME/.config/fontconfig" ]]; then
+  rm -rf "$HOME/.config/fontconfig"
+fi
+
+echo 'Enabling System76-Scheduler KWin script'
+kwriteconfig5 --file kwinrc --group Plugins --key kwin-system76-scheduler-integrationEnabled true
+
+dconf load / < /etc/dconf/db/local.d/13-quantix
 
 # Write the version
 echo "${QNTX_VER}" > "${QNTX_VER_FILE}" || { echo "Error writing to ${QNTX_VER_FILE}." >&2; exit 1; }

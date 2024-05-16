@@ -1,0 +1,55 @@
+#!/usr/bin/bash
+
+# Script version
+readonly QNTX_VER=1
+readonly QNTX_VER_DIR="/etc/quantix"
+readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_flatpak_version"
+QNTX_VER_RAN=""
+
+mkdir -p "${QNTX_VER_DIR}" || { echo "Error creating directory ${QNTX_VER_DIR}." >&2; exit 1; }
+
+if [[ -f "${QNTX_VER_FILE}" ]]; then
+  QNTX_VER_RAN=$(cat "${QNTX_VER_FILE}")
+fi
+
+# Run script if it has been updated
+if [[ -n "${QNTX_VER_RAN}" && "${QNTX_VER}" == "${QNTX_VER_RAN}" ]]; then
+    echo "Quantix system setup has already run. Exiting..."
+    exit 0
+fi
+
+# Ensure Flathub is enabled
+flatpak remote-add --if-not-exists --system flathub /usr/etc/flatpak/remotes.d/flathub.flatpakrepo
+flatpak remote-modify --system --enable flathub
+
+# Flatpak theming support
+flatpak override \
+  --filesystem=xdg-config/gtk-4.0:ro \
+  --filesystem=xdg-config/gtk-3.0:ro \
+  --filesystem=xdg-data/icons:ro
+
+# XInput for Firefox
+flatpak override \
+  --system \
+  --env=MOZ_USE_XINPUT2=1 \
+  org.mozilla.firefox
+
+# Fix printing on LibreOffice
+flatpak override \
+  --system \
+  --socket=cups \
+  --socket=session-bus \
+  org.libreoffice.LibreOffice
+
+# Allow MangoHUD config for Flatpaks
+flatpak override \
+  --filesystem=xdg-config/MangoHud:ro \
+  --filesystem=xdg-config/vkBasalt:ro
+
+# Fix permissions for XIV Launcher
+flatpak override \
+  --device=dri \
+  dev.goats.xivlauncher
+
+# Write the version
+echo "${QNTX_VER}" > "${QNTX_VER_FILE}" || { echo "Error writing to ${QNTX_VER_FILE}." >&2; exit 1; }
