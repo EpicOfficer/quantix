@@ -1,4 +1,4 @@
-name: quantix-testing
+name: quantix-os
 description: Bazzite for developers and power users.
 
 base-image: ghcr.io/ublue-os/kinoite-main
@@ -247,6 +247,7 @@ modules:
         - waydroid-workaround
         - dev-hugepages1G.mount
         - quantix-system-setup
+        - quantix-flatpak-setup
         - docker.socket
         - swtpm-workaround
         - libvirtd
@@ -261,7 +262,7 @@ modules:
 
   - type: default-flatpaks
     notify: false
-    user:
+    system:
       install:
         - com.brave.Browser
         - org.kde.gwenview

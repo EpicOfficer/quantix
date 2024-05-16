@@ -14,16 +14,13 @@ rm -f /usr/share/vulkan/icd.d/lvp_icd.*.json
 mkdir -p "/usr/etc/profile.d/"
 mkdir -p "/usr/etc/xdg/autostart"
 
-#echo "import \"/usr/share/ublue-os/just/80-bazzite.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/81-bazzite-fixes.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/82-bazzite-apps.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/82-bazzite-cdemu.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/82-bazzite-sunshine.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/82-bazzite-rmlint.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/82-bazzite-waydroid.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/83-bazzite-audio.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/84-bazzite-virt.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/85-bazzite-image.just\"" >> /usr/share/ublue-os/justfile
+echo "import \"/usr/share/ublue-os/just/80-quantix.just\"" >> /usr/share/ublue-os/justfile
+echo "import \"/usr/share/ublue-os/just/81-quantix-fixes.just\"" >> /usr/share/ublue-os/justfile
+echo "import \"/usr/share/ublue-os/just/82-quantix-apps.just\"" >> /usr/share/ublue-os/justfile
+echo "import \"/usr/share/ublue-os/just/82-quantix-cdemu.just\"" >> /usr/share/ublue-os/justfile
+echo "import \"/usr/share/ublue-os/just/82-quantix-sunshine.just\"" >> /usr/share/ublue-os/justfile
+echo "import \"/usr/share/ublue-os/just/82-quantix-waydroid.just\"" >> /usr/share/ublue-os/justfile
+echo "import \"/usr/share/ublue-os/just/84-quantix-virt.just\"" >> /usr/share/ublue-os/justfile
 #echo "import \"/usr/share/ublue-os/just/90-bazzite-de.just\"" >> /usr/share/ublue-os/justfile
 
 sed -i 's/stage/none/g' /etc/rpm-ostreed.conf
@@ -38,8 +35,7 @@ ostree container commit
 
 # Branding
 sed -i '/^PRETTY_NAME/s/Kinoite/Quantix/' /usr/lib/os-release
-#sed -i 's/bazzite_logo.svgz/quantix_logo.svgz/g' /usr/share/plasma/look-and-feel/com.valve.vapor.desktop/contents/splash/Splash.qml
-#sed -i 's/bazzite_logo.svgz/quantix_logo.svgz/g' /usr/share/plasma/look-and-feel/com.valve.vgui.desktop/contents/splash/Splash.qml
+sed -i 's/plazma.svgz/quantix_logo.svgz/g' /usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/splash/Splash.qml
 
 # Disable repos
 sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/vscode.repo
