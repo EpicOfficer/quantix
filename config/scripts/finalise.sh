@@ -21,7 +21,6 @@ echo "import \"/usr/share/ublue-os/just/82-quantix-cdemu.just\"" >> /usr/share/u
 echo "import \"/usr/share/ublue-os/just/82-quantix-sunshine.just\"" >> /usr/share/ublue-os/justfile
 echo "import \"/usr/share/ublue-os/just/82-quantix-waydroid.just\"" >> /usr/share/ublue-os/justfile
 echo "import \"/usr/share/ublue-os/just/84-quantix-virt.just\"" >> /usr/share/ublue-os/justfile
-#echo "import \"/usr/share/ublue-os/just/90-bazzite-de.just\"" >> /usr/share/ublue-os/justfile
 
 sed -i 's/stage/none/g' /etc/rpm-ostreed.conf
 sed -i 's/#DefaultTimeoutStopSec.*/DefaultTimeoutStopSec=15s/' /usr/lib/systemd/user.conf
@@ -35,7 +34,7 @@ ostree container commit
 
 # Branding
 sed -i '/^PRETTY_NAME/s/Kinoite/Quantix/' /usr/lib/os-release
-sed -i 's/plazma.svgz/quantix_logo.svgz/g' /usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/splash/Splash.qml
+sed -i 's/plasma.svgz/quantix_logo.svgz/g' /usr/share/plasma/look-and-feel/org.kde.breeze.desktop/contents/splash/Splash.qml
 
 # Disable repos
 sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/vscode.repo
