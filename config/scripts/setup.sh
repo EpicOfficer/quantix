@@ -10,19 +10,6 @@ IMAGE_REF="ostree-image-signed:docker://ghcr.io/$IMAGE_VENDOR/$IMAGE_NAME"
 IMAGE_BRANCH_NORMALIZED="stable"
 IMAGE_TAG="stable"
 
-cat > $IMAGE_INFO <<EOF
-{
-  "image-name": "$IMAGE_NAME",
-  "image-flavor": "Developer Edition",
-  "image-vendor": "$IMAGE_VENDOR",
-  "image-ref": "$IMAGE_REF",
-  "image-tag": "$IMAGE_TAG",
-  "image-branch": "$IMAGE_BRANCH_NORMALIZED",
-  "base-image-name": "Kinoite",
-  "fedora-version": "$FEDORA_MAJOR_VERSION"
-}
-EOF
-
 # Setup COPR repos
 curl -Lo /usr/bin/copr https://raw.githubusercontent.com/ublue-os/COPR-command/main/copr
 chmod +x /usr/bin/copr
@@ -94,5 +81,18 @@ xz --check=crc32 /tmp/linux-firmware-galileo/*
 mv -vf /tmp/linux-firmware-galileo/* /usr/lib/firmware/qca/
 rm -rf /tmp/linux-firmware-galileo
 rm -rf /usr/share/alsa/ucm2/conf.d/acp5x/Valve-Jupiter-1.conf
+
+cat > $IMAGE_INFO <<EOF
+{
+  "image-name": "$IMAGE_NAME",
+  "image-flavor": "Developer Edition",
+  "image-vendor": "$IMAGE_VENDOR",
+  "image-ref": "$IMAGE_REF",
+  "image-tag": "$IMAGE_TAG",
+  "image-branch": "$IMAGE_BRANCH_NORMALIZED",
+  "base-image-name": "Kinoite",
+  "fedora-version": "$FEDORA_MAJOR_VERSION"
+}
+EOF
 
 sysctl -p

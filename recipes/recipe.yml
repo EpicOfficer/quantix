@@ -94,7 +94,6 @@ modules:
       - virt-manager
       - edk2-ovmf
       - qemu
-      - libXpresent
       - code
       - docker-ce
       - docker-ce-cli
@@ -104,37 +103,6 @@ modules:
       - podman-tui
       - podmansh
       - papirus-icon-theme
-    remove:
-      - ublue-os-update-services
-      - firefox
-      - firefox-langpacks
-      - htop
-
-  - type: script
-    snippets:
-      - pip install --prefix=/usr topgrade
-
-  - type: rpm-ostree
-    install:
-      - ublue-update
-
-  - type: script
-    snippets:
-      - mkdir -p /usr/etc/xdg/autostart
-      - echo "X-GNOME-Autostart-enabled=false" >> /usr/etc/xdg/autostart/sealertauto.desktop
-      - sed -i '1s/^/[include]\npaths = ["\/etc\/ublue-os\/topgrade.toml"]\n\n/' /usr/share/ublue-update/topgrade-user.toml
-      - sed -i 's/min_battery_percent.*/min_battery_percent = 20.0/' /usr/etc/ublue-update/ublue-update.toml
-      - sed -i 's/max_cpu_load_percent.*/max_cpu_load_percent = 100.0/' /usr/etc/ublue-update/ublue-update.toml
-      - sed -i 's/max_mem_percent.*/max_mem_percent = 90.0/' /usr/etc/ublue-update/ublue-update.toml
-      - sed -i 's/dbus_notify.*/dbus_notify = false/' /usr/etc/ublue-update/ublue-update.toml
-      - curl -Lo /usr/bin/installcab https://raw.githubusercontent.com/KyleGospo/steam-proton-mf-wmv/master/installcab.py
-      - chmod +x /usr/bin/installcab
-      - curl -Lo /usr/bin/install-mf-wmv https://github.com/KyleGospo/steam-proton-mf-wmv/blob/master/install-mf-wmv.sh
-      - chmod +x /usr/bin/install-mf-wmv
-      - curl -Lo /usr/share/thumbnailers/exe-thumbnailer.thumbnailer https://raw.githubusercontent.com/jlu5/icoextract/master/exe-thumbnailer.thumbnailer
-
-  - type: rpm-ostree
-    install:
       - jupiter-sd-mounting-btrfs
       - at-spi2-core.i686
       - atk.i686
@@ -146,6 +114,7 @@ modules:
       - libnsl.i686
       - libxcrypt-compat.i686
       - libpng12.i686
+      - libXpresent
       - libXext.i686
       - libXinerama.i686
       - libXtst.i686
@@ -161,38 +130,20 @@ modules:
       - libatomic.i686
       - pipewire-alsa.i686
       - clinfo
+    remove:
+      - firefox
+      - firefox-langpacks
+      - htop
 
   - type: script
     snippets:
-      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/fedora-updates.repo"
-
-  - type: rpm-ostree
-    install:
-      - mesa-vulkan-drivers.i686
-      - mesa-va-drivers-freeworld.i686
-      - mesa-vdpau-drivers-freeworld.i686
-
-  - type: script
-    snippets:
-      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-steam.repo"
-      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree.repo"
-      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo"
-      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo"
-
-  - type: rpm-ostree
-    install:
-      - steam
-  
-  - type: script
-    snippets:
-      - "sed -i '0,/enabled=1/s//enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-steam.repo"
-      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree.repo"
-      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo"
-      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo"
-      - "sed -i '0,/enabled=0/s//enabled=1/' /etc/yum.repos.d/fedora-updates.repo"
+      - pip install --prefix=/usr topgrade
+    scripts:
+      - installSteam.sh
   
   - type: rpm-ostree
     install:
+      - ublue-update
       - lutris
       - fluidsynth
       - fluid-soundfont-gm
@@ -218,6 +169,7 @@ modules:
       - rom-properties-kf6
       - joystickwake
     remove:
+      - ublue-os-update-services
       - gamemode
       - plasma-welcome
 
@@ -227,7 +179,9 @@ modules:
 
   - type: script
     scripts:
+      - configureTopgrade.sh
       - configure.sh
+      - finalise.sh
 
   - type: systemd
     user:
@@ -255,10 +209,6 @@ modules:
       disabled:
         - rpm-ostreed-automatic
         - waydroid-container.service 
-
-  - type: script
-    scripts:
-      - finalise.sh
 
   - type: default-flatpaks
     notify: false
