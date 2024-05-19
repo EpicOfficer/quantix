@@ -4,7 +4,7 @@ set -oue pipefail
 
 curl -Lo /usr/bin/installcab https://raw.githubusercontent.com/KyleGospo/steam-proton-mf-wmv/master/installcab.py
 chmod +x /usr/bin/installcab
-curl -Lo /usr/bin/install-mf-wmv https://github.com/KyleGospo/steam-proton-mf-wmv/blob/master/install-mf-wmv.sh
+curl -Lo /usr/bin/install-mf-wmv https://raw.githubusercontent.com/KyleGospo/steam-proton-mf-wmv/master/install-mf-wmv.sh
 chmod +x /usr/bin/install-mf-wmv
 curl -Lo /usr/share/thumbnailers/exe-thumbnailer.thumbnailer https://raw.githubusercontent.com/jlu5/icoextract/master/exe-thumbnailer.thumbnailer
 

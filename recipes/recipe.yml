@@ -27,8 +27,6 @@ modules:
       - nct6687d
       - evdi
       - zenergy
-      - ayaneo-platform
-      - ayn-platform
       - bmi260
       - ryzen-smu
       - vhba
@@ -51,8 +49,6 @@ modules:
       - powertop
       - i2c-tools
       - udica
-      - ladspa-caps-plugins
-      - ladspa-noise-suppression-for-voice
       - python3-icoextract
       - webapp-manager
       - btop
@@ -103,7 +99,6 @@ modules:
       - podman-tui
       - podmansh
       - papirus-icon-theme
-      - jupiter-sd-mounting-btrfs
       - at-spi2-core.i686
       - atk.i686
       - vulkan-loader.i686
@@ -167,7 +162,6 @@ modules:
       - kdeconnectd
       - kdeplasma-addons
       - rom-properties-kf6
-      - joystickwake
     remove:
       - ublue-os-update-services
       - gamemode
