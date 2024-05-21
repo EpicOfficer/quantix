@@ -1,4 +1,4 @@
-name: Build Bazzite
+name: Build Quantix
 on:
   schedule:
     - cron: '30 17 * * 2,5' # 17:30 Tues/Thurs
@@ -67,27 +67,6 @@ jobs:
           else
               echo "IMAGE_NAME=${{ format('{0}-{1}', 'quantix', env.IMAGE_FLAVOR) }}" >> $GITHUB_ENV
           fi
-
-      - name: Verify main image
-        uses: EyeCantCU/cosign-action/verify@v0.2.2
-        with:
-          containers: ${{ matrix.base_image_name }}-${{ matrix.base_image_flavor }}:${{ matrix.fedora_version }}
-          pubkey: https://raw.githubusercontent.com/ublue-os/${{ matrix.base_image_flavor }}/main/cosign.pub
-          registry: ${{ env.IMAGE_REGISTRY }}
-
-      - name: Verify akmods image
-        uses: EyeCantCU/cosign-action/verify@v0.2.2
-        with:
-          containers: akmods:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
-          pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
-          registry: ${{ env.IMAGE_REGISTRY }}
-
-      - name: Verify akmods-nvidia image
-        uses: EyeCantCU/cosign-action/verify@v0.2.2
-        with:
-          containers: akmods-nvidia:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
-          pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
-          registry: ${{ env.IMAGE_REGISTRY }}
 
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action
