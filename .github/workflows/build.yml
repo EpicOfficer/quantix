@@ -72,6 +72,34 @@ jobs:
         run: |
           echo "IMAGE_REGISTRY=ghcr.io/ublue-os" >> $GITHUB_ENV
 
+      - name: Verify main image
+        uses: EyeCantCU/cosign-action/verify@v0.2.2
+        with:
+          containers: ${{ matrix.base_image_name }}-${{ matrix.base_image_flavor }}:${{ matrix.fedora_version }}
+          pubkey: https://raw.githubusercontent.com/ublue-os/${{ matrix.base_image_flavor }}/main/cosign.pub
+          registry: ${{ env.IMAGE_REGISTRY }}
+
+      - name: Verify akmods image
+        uses: EyeCantCU/cosign-action/verify@v0.2.2
+        with:
+          containers: akmods:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
+          pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
+          registry: ${{ env.IMAGE_REGISTRY }}
+
+      - name: Verify akmods-extra image
+        uses: EyeCantCU/cosign-action/verify@v0.2.2
+        with:
+          containers: akmods-extra:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
+          pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
+          registry: ${{ env.IMAGE_REGISTRY }}
+
+      - name: Verify akmods-nvidia image
+        uses: EyeCantCU/cosign-action/verify@v0.2.2
+        with:
+          containers: akmods-nvidia:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
+          pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
+          registry: ${{ env.IMAGE_REGISTRY }}
+
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action
         uses: actions/checkout@v4
@@ -203,15 +231,6 @@ jobs:
           oci: false
           extra-args: |
             --target=${{ matrix.base_name }}
-
-      - name: Sign kernel
-        uses: EyeCantCU/kernel-signer@v0.2.1
-        with:
-          image: ${{ steps.build_image.outputs.image }}
-          default-tag: ${{ env.DEFAULT_TAG }}
-          privkey: ${{ secrets.AKMOD_PRIVKEY_20230518 }}
-          pubkey: /etc/pki/akmods/certs/akmods-ublue.der
-          tags: ${{ steps.build_image.outputs.tags }}
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
       # https://github.com/macbre/push-to-ghcr/issues/12
