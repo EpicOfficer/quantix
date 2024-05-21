@@ -66,8 +66,8 @@ jobs:
       - name: Verify main image
         uses: EyeCantCU/cosign-action/verify@v0.2.2
         with:
-          containers: ${{ matrix.base_image_name }}-${{ matrix.base_image_flavor }}:${{ matrix.fedora_version }}
-          pubkey: https://raw.githubusercontent.com/ublue-os/${{ matrix.base_image_flavor }}/main/cosign.pub
+          containers: ${{ env.BASE_IMAGE_NAME }}-${{ env.IMAGE_FLAVOR }}:${{ env.FEDORA_VERSION }}
+          pubkey: https://raw.githubusercontent.com/ublue-os/${{ env.IMAGE_FLAVOR }}/main/cosign.pub
           registry: ${{ env.BASE_IMAGE_REGISTRY }}
 
       - name: Verify akmods image
