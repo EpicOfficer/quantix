@@ -68,6 +68,10 @@ jobs:
               echo "IMAGE_NAME=${{ format('{0}-{1}', 'quantix', env.IMAGE_FLAVOR) }}" >> $GITHUB_ENV
           fi
 
+      - name: Define env.IMAGE_REGISTRY
+        run: |
+          echo "IMAGE_REGISTRY=ghcr.io/ublue-os" >> $GITHUB_ENV
+
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action
         uses: actions/checkout@v4
@@ -136,6 +140,7 @@ jobs:
             # we can retry on that unfortunately common failure case
             podman pull ${{ env.IMAGE_REGISTRY }}/${{ matrix.base_image_name }}-${{ matrix.base_image_flavor }}:${{ matrix.fedora_version }}
             podman pull ${{ env.IMAGE_REGISTRY }}/akmods:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
+            podman pull ${{ env.IMAGE_REGISTRY }}/akmods-extra:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
             podman pull ${{ env.IMAGE_REGISTRY }}/akmods-nvidia:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
 
       - name: Get source versions
