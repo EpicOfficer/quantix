@@ -52,7 +52,7 @@ jobs:
           if [[ "${{ matrix.base_name }}" == "quantix-nvidia" ]]; then
               echo "IMAGE_FLAVOR=nvidia" >> $GITHUB_ENV
           else
-              echo "IMAGE_FLAVOR=${{ matrix.target_image_flavor }}" >> $GITHUB_ENV
+              echo "IMAGE_FLAVOR=${{ env.BASE_IMAGE_FLAVOR }}" >> $GITHUB_ENV
           fi
 
       - name: Define env.IMAGE_NAME
@@ -73,21 +73,21 @@ jobs:
       - name: Verify akmods image
         uses: EyeCantCU/cosign-action/verify@v0.2.2
         with:
-          containers: akmods:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
+          containers: akmods:${{ matrix.kernel_flavor}}-${{ env.FEDORA_VERSION }}
           pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
           registry: ${{ env.BASE_IMAGE_REGISTRY }}
 
       - name: Verify akmods-extra image
         uses: EyeCantCU/cosign-action/verify@v0.2.2
         with:
-          containers: akmods-extra:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
+          containers: akmods-extra:${{ matrix.kernel_flavor}}-${{ env.FEDORA_VERSION }}
           pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
           registry: ${{ env.BASE_IMAGE_REGISTRY }}
 
       - name: Verify akmods-nvidia image
         uses: EyeCantCU/cosign-action/verify@v0.2.2
         with:
-          containers: akmods-nvidia:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
+          containers: akmods-nvidia:${{ matrix.kernel_flavor}}-${{ env.FEDORA_VERSION }}
           pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
           registry: ${{ env.BASE_IMAGE_REGISTRY }}
 
