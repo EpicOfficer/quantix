@@ -517,6 +517,7 @@ RUN if [[ "${KERNEL_FLAVOR}" =~ "fsync" ]]; then \
     systemctl enable dev-hugepages1G.mount && \
     systemctl enable docker.socket && \
     systemctl enable libvirtd && \
+    systemctl enable swtpm-workaround && \
     systemctl --global enable quantix-user-setup.service && \
     systemctl --global enable podman.socket && \
     systemctl --global enable systemd-tmpfiles-setup.service && \
