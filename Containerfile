@@ -454,13 +454,13 @@ COPY system_files/overrides /
 RUN /usr/libexec/containerbuild/build-initramfs && \
     /usr/libexec/containerbuild/image-info && \
     rm -f /etc/profile.d/toolbox.sh && \
-    echo "import \"/usr/share/ublue-os/just/80-quantix.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/81-quantix-fixes.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/82-quantix-apps.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/82-quantix-cdemu.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/82-quantix-sunshine.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/82-quantix-waydroid.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/84-quantix-virt.just\"" >> /usr/share/ublue-os/justfile \
+    echo "import \"/usr/share/ublue-os/just/80-quantix.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/81-quantix-fixes.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/82-quantix-apps.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/82-quantix-cdemu.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/82-quantix-sunshine.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/82-quantix-waydroid.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/84-quantix-virt.just\"" >> /usr/share/ublue-os/justfile && \
     sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/fish.desktop && \
     sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/nvtop.desktop && \
     sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/btop.desktop && \
