@@ -31,7 +31,7 @@ concurrency:
 
 jobs:
   push-ghcr:
-    name: Make
+    name: Build
     runs-on: ubuntu-24.04
     continue-on-error: false
     permissions:
@@ -253,14 +253,18 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-      - name: Sign container image
-        uses: EyeCantCU/cosign-action/sign@v0.2.2
+      # Sign container
+      - uses: sigstore/cosign-installer@v3.5.0
         if: github.event_name != 'pull_request'
-        with:
-          containers: ${{ env.IMAGE_NAME }}
-          registry-token: ${{ secrets.GITHUB_TOKEN }}
-          signing-secret: ${{ secrets.SIGNING_SECRET }}
-          tags: ${{ steps.push.outputs.outputs && fromJSON(steps.push.outputs.outputs).digest }}
+
+      - name: Sign container image
+        if: github.event_name != 'pull_request'
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.registry_case.outputs.lowercase }}/${{ steps.build_image.outputs.image }}@${TAGS}
+        env:
+          TAGS: ${{ steps.push.outputs.outputs && fromJSON(steps.push.outputs.outputs).digest }}
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
 
       - name: Echo outputs
         if: github.event_name != 'pull_request'
