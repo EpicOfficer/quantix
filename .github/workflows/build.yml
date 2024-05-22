@@ -1,7 +1,7 @@
 name: Build Quantix
 on:
   schedule:
-    - cron: '30 17 * * 2,5' # 17:30 Tues/Thurs
+    - cron: '30 17 * * 1,3,5' # 17:30 Monday/Wednesday/Friday
   pull_request:
     branches:
       - testing
