@@ -1,7 +1,7 @@
 name: Build Quantix
 on:
   schedule:
-    - cron: '30 17 * * 2,5' # 17:30 Tues/Thurs
+    - cron: '30 17 * * 1,3,5' # 17:30 Monday/Wednesday/Friday
   pull_request:
     branches:
       - testing
@@ -19,7 +19,11 @@ on:
   merge_group:
   workflow_dispatch:
 env:
+  BASE_IMAGE_REGISTRY: ghcr.io/ublue-os
+  BASE_IMAGE_NAME: kinoite
+  BASE_IMAGE_FLAVOR: main
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  FEDORA_VERSION: 40
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
@@ -27,7 +31,7 @@ concurrency:
 
 jobs:
   push-ghcr:
-    name: Make
+    name: Build
     runs-on: ubuntu-24.04
     continue-on-error: false
     permissions:
@@ -37,27 +41,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base_image_flavor: [main]
         base_name: [quantix, quantix-nvidia]
-        base_image_name: [kinoite]
-        target_image_flavor: [main]
-        fedora_version: [40]
         include:
-          - fedora_version: 40
-            is_latest_version: true
+          - is_latest_version: true
             is_stable_version: true
             kernel_flavor: fsync  # must match a kernel_flavor from akmods repo
     steps:
       - name: Define env.IMAGE_FLAVOR
         run: |
           if [[ "${{ matrix.base_name }}" == "quantix-nvidia" ]]; then
-              if [[ "${{ matrix.target_image_flavor }}" == "main" ]]; then
-                  echo "IMAGE_FLAVOR=nvidia" >> $GITHUB_ENV
-              else
-                  echo "IMAGE_FLAVOR=${{ format('{0}-{1}', matrix.target_image_flavor, 'nvidia') }}" >> $GITHUB_ENV
-              fi
+              echo "IMAGE_FLAVOR=nvidia" >> $GITHUB_ENV
           else
-              echo "IMAGE_FLAVOR=${{ matrix.target_image_flavor }}" >> $GITHUB_ENV
+              echo "IMAGE_FLAVOR=${{ env.BASE_IMAGE_FLAVOR }}" >> $GITHUB_ENV
           fi
 
       - name: Define env.IMAGE_NAME
@@ -68,9 +63,33 @@ jobs:
               echo "IMAGE_NAME=${{ format('{0}-{1}', 'quantix', env.IMAGE_FLAVOR) }}" >> $GITHUB_ENV
           fi
 
-      - name: Define env.IMAGE_REGISTRY
-        run: |
-          echo "IMAGE_REGISTRY=ghcr.io/ublue-os" >> $GITHUB_ENV
+      - name: Verify main image
+        uses: EyeCantCU/cosign-action/verify@v0.2.2
+        with:
+          containers: ${{ env.BASE_IMAGE_NAME }}-${{ env.IMAGE_FLAVOR }}:${{ env.FEDORA_VERSION }}
+          pubkey: https://raw.githubusercontent.com/ublue-os/${{ env.IMAGE_FLAVOR }}/main/cosign.pub
+          registry: ${{ env.BASE_IMAGE_REGISTRY }}
+
+      - name: Verify akmods image
+        uses: EyeCantCU/cosign-action/verify@v0.2.2
+        with:
+          containers: akmods:${{ matrix.kernel_flavor}}-${{ env.FEDORA_VERSION }}
+          pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
+          registry: ${{ env.BASE_IMAGE_REGISTRY }}
+
+      - name: Verify akmods-extra image
+        uses: EyeCantCU/cosign-action/verify@v0.2.2
+        with:
+          containers: akmods-extra:${{ matrix.kernel_flavor}}-${{ env.FEDORA_VERSION }}
+          pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
+          registry: ${{ env.BASE_IMAGE_REGISTRY }}
+
+      - name: Verify akmods-nvidia image
+        uses: EyeCantCU/cosign-action/verify@v0.2.2
+        with:
+          containers: akmods-nvidia:${{ matrix.kernel_flavor}}-${{ env.FEDORA_VERSION }}
+          pubkey: https://raw.githubusercontent.com/ublue-os/akmods/main/cosign.pub
+          registry: ${{ env.BASE_IMAGE_REGISTRY }}
 
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action
@@ -85,7 +104,7 @@ jobs:
         run: |
           # Generate a timestamp for creating an image version history
           TIMESTAMP="$(date +%Y%m%d)"
-          FEDORA_VERSION="${{ matrix.fedora_version }}"
+          FEDORA_VERSION="${{ env.FEDORA_VERSION }}"
           COMMIT_TAGS=()
           BUILD_TAGS=()
           # Have tags for tracking builds during pull request
@@ -138,10 +157,10 @@ jobs:
           command: |
             # pull the base images used for FROM in Containerfile so
             # we can retry on that unfortunately common failure case
-            podman pull ${{ env.IMAGE_REGISTRY }}/${{ matrix.base_image_name }}-${{ matrix.base_image_flavor }}:${{ matrix.fedora_version }}
-            podman pull ${{ env.IMAGE_REGISTRY }}/akmods:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
-            podman pull ${{ env.IMAGE_REGISTRY }}/akmods-extra:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
-            podman pull ${{ env.IMAGE_REGISTRY }}/akmods-nvidia:${{ matrix.kernel_flavor}}-${{ matrix.fedora_version }}
+            podman pull ${{ env.BASE_IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-${{ env.BASE_IMAGE_FLAVOR }}:${{ env.FEDORA_VERSION }}
+            podman pull ${{ env.BASE_IMAGE_REGISTRY }}/akmods:${{ matrix.kernel_flavor}}-${{ env.FEDORA_VERSION }}
+            podman pull ${{ env.BASE_IMAGE_REGISTRY }}/akmods-extra:${{ matrix.kernel_flavor}}-${{ env.FEDORA_VERSION }}
+            podman pull ${{ env.BASE_IMAGE_REGISTRY }}/akmods-nvidia:${{ matrix.kernel_flavor}}-${{ env.FEDORA_VERSION }}
 
       - name: Get source versions
         id: labels
@@ -151,7 +170,7 @@ jobs:
           attempt_delay: 15000
           command: |
             set -eo pipefail
-            skopeo inspect docker://${{ env.IMAGE_REGISTRY }}/${{ matrix.base_image_name }}-${{ matrix.base_image_flavor }}:${{ matrix.fedora_version }} > source.json
+            skopeo inspect docker://${{ env.BASE_IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-${{ env.BASE_IMAGE_FLAVOR }}:${{ env.FEDORA_VERSION }} > source.json
             ver=$(jq -r '.Labels["org.opencontainers.image.version"]' source.json)
             if [ -z "$ver" ] || [ "null" = "$ver" ]; then
               echo "inspected image version must not be empty or null"
@@ -159,7 +178,7 @@ jobs:
             fi
             echo "SOURCE_IMAGE_VERSION=$ver" >> $GITHUB_ENV
 
-            skopeo inspect docker://${{ env.IMAGE_REGISTRY }}/akmods:${{ matrix.kernel_flavor }}-${{ matrix.fedora_version }} > akmods.json
+            skopeo inspect docker://${{ env.BASE_IMAGE_REGISTRY }}/akmods:${{ matrix.kernel_flavor }}-${{ env.FEDORA_VERSION }} > akmods.json
             linux=$(jq -r '.Labels["ostree.linux"]' akmods.json)
             if [ -z "$linux" ] || [ "null" = "$linux" ]; then
               echo "inspected image linux version must not be empty or null"
@@ -194,24 +213,15 @@ jobs:
             IMAGE_NAME=${{ env.IMAGE_NAME }}
             IMAGE_FLAVOR=${{ env.IMAGE_FLAVOR }}
             IMAGE_VENDOR=${{ github.repository_owner }}
-            BASE_IMAGE_NAME=${{ matrix.base_image_name }}
-            BASE_IMAGE_FLAVOR=${{ matrix.base_image_flavor }}
-            FEDORA_VERSION=${{ matrix.fedora_version }}
+            BASE_IMAGE_NAME=${{ env.BASE_IMAGE_NAME }}
+            BASE_IMAGE_FLAVOR=${{ env.BASE_IMAGE_FLAVOR }}
+            FEDORA_VERSION=${{ env.FEDORA_VERSION }}
             KERNEL_FLAVOR=${{ matrix.kernel_flavor }}
             IMAGE_BRANCH=${{ github.ref_name }}
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
           extra-args: |
             --target=${{ matrix.base_name }}
-
-      - name: Sign kernel
-        uses: EyeCantCU/kernel-signer@v0.2.1
-        with:
-          image: ${{ steps.build_image.outputs.image }}
-          default-tag: ${{ env.DEFAULT_TAG }}
-          privkey: ${{ secrets.AKMOD_PRIVKEY_20230518 }}
-          pubkey: /etc/pki/akmods/certs/akmods-ublue.der
-          tags: ${{ steps.build_image.outputs.tags }}
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
       # https://github.com/macbre/push-to-ghcr/issues/12
@@ -221,35 +231,40 @@ jobs:
         with:
           string: ${{ env.IMAGE_REGISTRY }}
 
-      # Push the image to GHCR (Image Registry)
-      - name: Push To GHCR
-        uses: Wandalen/wretry.action@v3.5.0
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Image to GHCR
+        uses: redhat-actions/push-to-registry@v2
         id: push
-        if: github.event_name != 'pull_request'
         env:
           REGISTRY_USER: ${{ github.actor }}
           REGISTRY_PASSWORD: ${{ github.token }}
         with:
-          action: redhat-actions/push-to-registry@v2
-          attempt_limit: 3
-          attempt_delay: 15000
-          with: |
-            image: ${{ steps.build_image.outputs.image }}
-            tags: ${{ steps.build_image.outputs.tags }}
-            registry: ${{ steps.registry_case.outputs.lowercase }}
-            username: ${{ env.REGISTRY_USER }}
-            password: ${{ env.REGISTRY_PASSWORD }}
-            extra-args: |
-              --disable-content-trust
+          image: ${{ steps.build_image.outputs.image }}
+          tags: ${{ steps.build_image.outputs.tags }}
+          registry: ${{ steps.registry_case.outputs.lowercase }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --disable-content-trust
+
+      # Sign container
+      - uses: sigstore/cosign-installer@v3.5.0
+        if: github.event_name != 'pull_request'
 
       - name: Sign container image
-        uses: EyeCantCU/cosign-action/sign@v0.2.2
         if: github.event_name != 'pull_request'
-        with:
-          containers: ${{ env.IMAGE_NAME }}
-          registry-token: ${{ secrets.GITHUB_TOKEN }}
-          signing-secret: ${{ secrets.SIGNING_SECRET }}
-          tags: ${{ steps.push.outputs.outputs && fromJSON(steps.push.outputs.outputs).digest }}
+        run: |
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ steps.registry_case.outputs.lowercase }}/${{ steps.build_image.outputs.image }}@${TAGS}
+        env:
+          TAGS: ${{ steps.push.outputs.digest }}
+          COSIGN_EXPERIMENTAL: false
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
 
       - name: Echo outputs
         if: github.event_name != 'pull_request'

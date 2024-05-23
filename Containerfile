@@ -482,13 +482,13 @@ COPY system_files/overrides /
 RUN /usr/libexec/containerbuild/build-initramfs && \
     /usr/libexec/containerbuild/image-info && \
     rm -f /etc/profile.d/toolbox.sh && \
-    echo "import \"/usr/share/ublue-os/just/80-quantix.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/81-quantix-fixes.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/82-quantix-apps.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/82-quantix-cdemu.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/82-quantix-sunshine.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/82-quantix-waydroid.just\"" >> /usr/share/ublue-os/justfile \
-    echo "import \"/usr/share/ublue-os/just/84-quantix-virt.just\"" >> /usr/share/ublue-os/justfile \
+    echo "import \"/usr/share/ublue-os/just/80-quantix.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/81-quantix-fixes.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/82-quantix-apps.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/82-quantix-cdemu.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/82-quantix-sunshine.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/82-quantix-waydroid.just\"" >> /usr/share/ublue-os/justfile && \
+    echo "import \"/usr/share/ublue-os/just/84-quantix-virt.just\"" >> /usr/share/ublue-os/justfile && \
     sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/fish.desktop && \
     sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/nvtop.desktop && \
     sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/btop.desktop && \
@@ -545,6 +545,7 @@ RUN if [[ "${KERNEL_FLAVOR}" =~ "fsync" ]]; then \
     systemctl enable dev-hugepages1G.mount && \
     systemctl enable docker.socket && \
     systemctl enable libvirtd && \
+    systemctl enable swtpm-workaround && \
     systemctl --global enable quantix-user-setup.service && \
     systemctl --global enable podman.socket && \
     systemctl --global enable systemd-tmpfiles-setup.service && \
