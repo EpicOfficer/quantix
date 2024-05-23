@@ -42,6 +42,7 @@ RUN curl -Lo /usr/bin/copr https://raw.githubusercontent.com/ublue-os/COPR-comma
     curl -Lo /etc/yum.repos.d/_copr_rok-cdemu.repo https://copr.fedorainfracloud.org/coprs/rok/cdemu/repo/fedora-"${FEDORA_MAJOR_VERSION}"/rok-cdemu-fedora-"${FEDORA_MAJOR_VERSION}".rep && \
     curl -Lo /etc/yum.repos.d/_copr_rodoma92-kde-cdemu-manager.repo https://copr.fedorainfracloud.org/coprs/rodoma92/kde-cdemu-manager/repo/fedora-"${FEDORA_MAJOR_VERSION}"/rodoma92-kde-cdemu-manager-fedora-"${FEDORA_MAJOR_VERSION}".repo && \
     curl -Lo /etc/yum.repos.d/_copr_rodoma92-rmlint.repo https://copr.fedorainfracloud.org/coprs/rodoma92/rmlint/repo/fedora-"${FEDORA_MAJOR_VERSION}"/rodoma92-rmlint-fedora-"${FEDORA_MAJOR_VERSION}".repo && \
+    curl -Lo /etc/yum.repos.d/ganto-lxc4-fedora-"${FEDORA_MAJOR_VERSION}".repo https://copr.fedorainfracloud.org/coprs/ganto/lxc4/repo/fedora-"${FEDORA_MAJOR_VERSION}"/ganto-lxc4-fedora-"${FEDORA_MAJOR_VERSION}".repo && \
     curl -Lo /etc/yum.repos.d/tailscale.repo https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
     sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/_copr_kylegospo-bazzite.repo && \
     sed -i 's@gpgcheck=1@gpgcheck=0@g' /etc/yum.repos.d/tailscale.repo && \
@@ -232,14 +233,44 @@ RUN rpm-ostree override remove \
 
 # Install new packages
 RUN rpm-ostree install \
+        adobe-source-code-pro-fonts \
+        cascadia-code-fonts \
+        jetbrains-mono-fonts-all \
+        twitter-twemoji-fonts \
+        mozilla-fira-mono-fonts \
+        ibm-plex-mono-fonts \
+        google-droid-sans-mono-fonts \
+		google-go-mono-fonts \
+        google-noto-sans-cjk-fonts \
+        lato-fonts \
+        fira-code-fonts \
+        nerd-fonts \
+        genisoimage \
         virt-manager \
+        virt-viewer \
         edk2-ovmf \
+        libvirt \
+        lxc \
+        lxd-agent \
+        lxd \
         qemu \
+        qemu-char-spice \
+        qemu-device-display-virtio-gpu \
+        qemu-device-display-virtio-vga \
+        qemu-device-usb-redirect \
+        qemu-img \
+        qemu-system-x86-core \
+        qemu-user-binfmt \
+        qemu-user-static \
+        incus \
+        incus-agent \
         code \
+        devpod \
         docker-ce \
         docker-ce-cli \
         docker-buildx-plugin \
         docker-compose-plugin \
+        containerd.io \
         podman-compose \
         podman-tui \
         podmansh \
@@ -277,11 +308,6 @@ RUN rpm-ostree install \
         vulkan-tools \
         glibc.i686 \
         extest.i686 \
-        twitter-twemoji-fonts \
-        google-noto-sans-cjk-fonts \
-        lato-fonts \
-        fira-code-fonts \
-        nerd-fonts \
         fastfetch \
         glow \
         gum \
@@ -289,12 +315,14 @@ RUN rpm-ostree install \
         zoxide \
         setools \
         setroubleshoot \
+        cockpit-machines \
         cockpit-networkmanager \
+        cockpit-ostree \
+        cockpit-pcp \
         cockpit-podman \
         cockpit-selinux \
-        cockpit-system \
-        cockpit-navigator \
         cockpit-storaged \
+        cockpit-system \
         lsb_release && \
     pip install --prefix=/usr topgrade && \
     rpm-ostree install \
