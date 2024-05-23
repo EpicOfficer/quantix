@@ -248,8 +248,6 @@ RUN rpm-ostree install \
         edk2-ovmf \
         libvirt \
         lxc \
-        lxd-agent \
-        lxd \
         qemu \
         qemu-char-spice \
         qemu-device-display-virtio-gpu \
@@ -259,8 +257,6 @@ RUN rpm-ostree install \
         qemu-system-x86-core \
         qemu-user-binfmt \
         qemu-user-static \
-        incus \
-        incus-agent \
         code \
         devpod \
         docker-ce \
