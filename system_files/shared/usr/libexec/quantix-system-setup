@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Script version
-readonly QNTX_VER=8
+readonly QNTX_VER=9
 readonly QNTX_VER_DIR="/etc/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""
@@ -46,33 +46,6 @@ else
     --append-if-missing="vfio_pci.disable_vga=1" \
     --delete-if-present="nomodeset" \
     --reboot || exit 1
-fi
-
-# FSTAB CONFIGURATION
-if [[ ! -e /etc/ublue-os/.fstab_adjusted.flag && $(grep "compress=zstd" /etc/fstab) ]]; then
-    echo "Applying fstab param adjustments"
-    sed -i 's/compress=zstd:1/noatime,lazytime,commit=120,discard=async,compress-force=zstd:1,space_cache=v2/g' /etc/fstab
-    touch /etc/ublue-os/.fstab_adjusted.flag
-else
-    echo "No fstab param adjustments needed"
-fi
-
-# WAYDROID FIX
-if [[ -f "/var/lib/waydroid/lxc/waydroid/config" ]]; then
-  echo "Removing unneeded apparmor entry from Waydroid LXC"
-  sed -i '/lxc\.apparmor\.profile\s*=\s*unconfined/d' "/var/lib/waydroid/lxc/waydroid/config"
-fi
-
-# HOSTNAME FIX
-# If the hostname is too long Distrobox will fail during setup
-# Let's check the length and reset it to something sensible if that happens.
-if (( $(hostname | wc -m) > 20 )); then
-  hostnamectl set-hostname quantix
-fi
-
-# Set default target to graphical, fixes rebase from base image
-if grep -qv "graphical.target" <<< "$(systemctl get-default)"; then
-  systemctl set-default graphical.target
 fi
 
 # Add wheel users to appropriate groups
