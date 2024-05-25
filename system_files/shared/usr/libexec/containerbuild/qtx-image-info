@@ -10,14 +10,7 @@ if [[ $IMAGE_BRANCH_NORMALIZED == "main" ]]; then
   IMAGE_BRANCH_NORMALIZED="stable"
 fi
 
-case $FEDORA_MAJOR_VERSION in
-  39|40)
-    IMAGE_TAG="stable"
-    ;;
-  *)
-    IMAGE_TAG="$FEDORA_MAJOR_VERSION"
-    ;;
-esac
+IMAGE_TAG="stable"
 
 cat > $IMAGE_INFO <<EOF
 {

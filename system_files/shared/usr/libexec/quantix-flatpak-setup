@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Script version
-readonly QNTX_VER=2
+readonly QNTX_VER=3
 readonly QNTX_VER_DIR="/etc/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_flatpak_version"
 QNTX_VER_RAN=""
@@ -22,82 +22,8 @@ IMAGE_INFO="/usr/share/quantix-os/image-info.json"
 IMAGE_FLAVOR=$(jq -r '."image-flavor"' < $IMAGE_INFO)
 BASE_IMAGE_NAME=$(jq -r '."base-image-name"' < $IMAGE_INFO)
 
-# Ensure Flathub is enabled
-flatpak remote-add --if-not-exists --system flathub /usr/etc/flatpak/remotes.d/flathub.flatpakrepo
-flatpak remote-modify --system --enable flathub
-
-# Flatpak theming support
-flatpak override \
-  --filesystem=xdg-config/gtk-4.0:ro \
-  --filesystem=xdg-config/gtk-3.0:ro \
-  --filesystem=xdg-data/icons:ro
-
-# XInput for Firefox
-flatpak override \
-  --system \
-  --env=MOZ_USE_XINPUT2=1 \
-  org.mozilla.firefox
-
-# Params needed for HW accelerated video on Nvidia (Ignoring hybrid systems)
-if [[ $IMAGE_FLAVOR =~ "nvidia" ]] && [ $(grep -o "\-display" <<< $(lshw -C display) | wc -l) -le 1 ] && grep -q "vendor: NVIDIA Corporation" <<< $(lshw -C display); then
-  flatpak override \
-    --system \
-    --filesystem=host-os \
-    --env=LIBVA_DRIVER_NAME=nvidia \
-    --env=LIBVA_DRIVERS_PATH=/run/host/usr/lib64/dri \
-    --env=LIBVA_MESSAGING_LEVEL=1 \
-    --env=MOZ_DISABLE_RDD_SANDBOX=1 \
-    --env=NVD_BACKEND=direct \
-    org.mozilla.firefox
-else
-  # Undo if user was previously using a Nvidia image and is no longer
-  flatpak override \
-    --system \
-    --nofilesystem=host-os \
-    --unset-env=LIBVA_DRIVER_NAME \
-    --unset-env=LIBVA_DRIVERS_PATH \
-    --unset-env=LIBVA_MESSAGING_LEVEL \
-    --unset-env=MOZ_DISABLE_RDD_SANDBOX \
-    --unset-env=NVD_BACKEND \
-    org.mozilla.firefox
-fi
-
-# Fix printing on LibreOffice
-flatpak override \
-  --system \
-  --socket=cups \
-  --socket=session-bus \
-  org.libreoffice.LibreOffice
-
-# Allow MangoHUD config for Flatpaks
-flatpak override \
-  --filesystem=xdg-config/MangoHud:ro \
-  --filesystem=xdg-config/vkBasalt:ro
-
-# Fix permissions for XIV Launcher
-flatpak override \
-  --device=dri \
-  dev.goats.xivlauncher
-
 flatpak --system -y install --or-update \
-  com.brave.Browser \
-  org.kde.gwenview \
-  org.kde.okular \
-  org.kde.kcalc \
-  org.kde.haruna \
-  org.kde.filelight \
-  io.github.fastrizwaan.WineZGUI \
-  io.github.dvlv.boxbuddyrs \
-  it.mijorus.gearlever \
-  com.github.tchx84.Flatseal \
-  io.github.flattool.Warehouse \
-  net.davidotek.pupgui2 \
-  org.freedesktop.Platform.VulkanLayer.MangoHud//23.08 \
-  org.freedesktop.Platform.VulkanLayer.vkBasalt//23.08 \
-  org.freedesktop.Platform.VulkanLayer.OBSVkCapture//23.08 \
-  com.obsproject.Studio.Plugin.OBSVkCapture \
-  com.obsproject.Studio.Plugin.Gstreamer \
-  com.obsproject.Studio.Plugin.GStreamerVaapi \
+  com.brave.Browser
 
 # Write the version
 echo "${QNTX_VER}" > "${QNTX_VER_FILE}" || { echo "Error writing to ${QNTX_VER_FILE}." >&2; exit 1; }
