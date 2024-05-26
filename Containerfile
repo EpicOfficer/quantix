@@ -41,6 +41,7 @@ RUN rpm-ostree install \
         podmansh \
         papirus-icon-theme \
         libXpresent \
+        protonvpn-stable-release \
         /tmp/ProtonMail-desktop-beta.rpm && \
     ostree container commit
 
