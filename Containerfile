@@ -9,6 +9,9 @@ ARG FEDORA_MAJOR_VERSION=40
 
 COPY system_files/shared /
 
+# Download Protonmail RPM
+RUN curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm
+
 # Install new packages
 RUN rpm-ostree install \
         adobe-source-code-pro-fonts \
@@ -37,7 +40,8 @@ RUN rpm-ostree install \
         podman-tui \
         podmansh \
         papirus-icon-theme \
-        libXpresent && \
+        libXpresent \
+        /tmp/ProtonMail-desktop-beta.rpm && \
     ostree container commit
 
 RUN systemctl unmask quantix-flatpak-manager.service && \
