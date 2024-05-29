@@ -23,7 +23,7 @@
   jobs:
     push-ghcr:
       name: Build and push image
-      runs-on: ubuntu-24.04
+      runs-on: ubuntu-latest
       continue-on-error: false
       permissions:
         contents: read
