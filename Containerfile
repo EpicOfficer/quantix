@@ -33,9 +33,7 @@ RUN curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/lin
         papirus-icon-theme \
         libXpresent \
         /tmp/ProtonMail-desktop-beta.rpm && \
-    ostree container commit
-
-RUN systemctl unmask quantix-flatpak-manager.service && \
+    systemctl unmask quantix-flatpak-manager.service && \
     systemctl enable quantix-flatpak-manager.service && \
     systemctl enable quantix-system-setup.service && \
     systemctl enable docker.socket && \

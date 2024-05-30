@@ -2,16 +2,12 @@
 
 set -oue pipefail
 
-IMAGE_VENDOR="epicofficer"
-IMAGE_NAME="quantix"
-IMAGE_REF="ostree-image-signed:docker://ghcr.io/$IMAGE_VENDOR/$IMAGE_NAME"
-
 cat > /usr/share/quantix-os/image-info.json <<EOF
 {
-  "image-name": "$IMAGE_NAME",
+  "image-name": "quantix",
   "image-flavor": "main",
-  "image-vendor": "$IMAGE_VENDOR",
-  "image-ref": "$IMAGE_REF",
+  "image-vendor": "epicofficer",
+  "image-ref": "ostree-image-signed:docker://ghcr.io/epicofficer/quantix",
   "image-tag": "stable",
   "image-branch": "main",
   "base-image-name": "Bazzite",
