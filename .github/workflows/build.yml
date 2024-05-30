@@ -93,7 +93,7 @@
             command: |
               # pull the base images used for FROM in Containerfile so
               # we can retry on that unfortunately common failure case
-              podman pull ghcr.io/bazzite:stable
+              podman pull ghcr.io/ublue-os/bazzite:stable
 
         - name: Get current version
           id: labels
