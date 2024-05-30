@@ -1,19 +1,10 @@
 FROM ghcr.io/ublue-os/bazzite:stable AS quantix
 
-ARG BASE_IMAGE_NAME="bazzite"
-ARG IMAGE_NAME="${IMAGE_NAME:-quantix}"
-ARG IMAGE_VENDOR="${IMAGE_VENDOR:-epicofficer}"
-ARG IMAGE_FLAVOR="${IMAGE_FLAVOR:-main}"
-ARG IMAGE_BRANCH="${IMAGE_BRANCH:-stable}"
-ARG FEDORA_MAJOR_VERSION=40
-
 COPY system_files/shared /
 
-# Download Protonmail RPM
-RUN curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm
-
 # Install new packages
-RUN rpm-ostree install \
+RUN curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm && \
+    rpm-ostree install \
         adobe-source-code-pro-fonts \
         cascadia-code-fonts \
         jetbrains-mono-fonts-all \

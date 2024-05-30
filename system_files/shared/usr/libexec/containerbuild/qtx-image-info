@@ -2,25 +2,19 @@
 
 set -oue pipefail
 
-IMAGE_INFO="/usr/share/quantix-os/image-info.json"
+IMAGE_VENDOR="epicofficer"
+IMAGE_NAME="quantix"
 IMAGE_REF="ostree-image-signed:docker://ghcr.io/$IMAGE_VENDOR/$IMAGE_NAME"
-IMAGE_BRANCH_NORMALIZED=$IMAGE_BRANCH
 
-if [[ $IMAGE_BRANCH_NORMALIZED == "main" ]]; then
-  IMAGE_BRANCH_NORMALIZED="stable"
-fi
-
-IMAGE_TAG="stable"
-
-cat > $IMAGE_INFO <<EOF
+cat > /usr/share/quantix-os/image-info.json <<EOF
 {
   "image-name": "$IMAGE_NAME",
-  "image-flavor": "$IMAGE_FLAVOR",
+  "image-flavor": "main",
   "image-vendor": "$IMAGE_VENDOR",
   "image-ref": "$IMAGE_REF",
-  "image-tag": "$IMAGE_TAG",
-  "image-branch": "$IMAGE_BRANCH_NORMALIZED",
-  "base-image-name": "$BASE_IMAGE_NAME",
-  "fedora-version": "$FEDORA_MAJOR_VERSION"
+  "image-tag": "stable",
+  "image-branch": "main",
+  "base-image-name": "Bazzite",
+  "fedora-version": "40"
 }
 EOF
