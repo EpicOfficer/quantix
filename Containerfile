@@ -32,6 +32,14 @@ RUN curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/lin
         podmansh \
         papirus-icon-theme \
         libXpresent \
+        ninja-build \
+        nasm \
+        iasl \
+        libuuid-devel \
+        glib2-devel \
+        pixman-devel \
+        spice-protocol \
+        spice-server-devel \
         /tmp/ProtonMail-desktop-beta.rpm && \
     systemctl unmask quantix-flatpak-manager.service && \
     systemctl enable quantix-flatpak-manager.service && \
