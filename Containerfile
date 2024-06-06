@@ -44,7 +44,7 @@ RUN rpm-ostree install \
         pixman-devel \
         spice-protocol \
         spice-server-devel && \
-        ostree container commit
+    ostree container commit
 
 # Finalise
 RUN systemctl unmask quantix-flatpak-manager.service && \
