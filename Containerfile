@@ -2,10 +2,13 @@ FROM ghcr.io/ublue-os/bazzite:stable AS quantix
 
 COPY system_files/shared /
 
-# Install new packages
+# Proton
 RUN curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm && \
-    curl -o /tmp/ProtonPass.rpm https://proton.me/download/PassDesktop/linux/x64/ProtonPass.rpm && \
-    rpm-ostree install \
+    rpm-ostree install /tmp/ProtonMail-desktop-beta.rpm && \
+    ostree container commit
+
+# Install new packages
+RUN rpm-ostree install \
         adobe-source-code-pro-fonts \
         cascadia-code-fonts \
         jetbrains-mono-fonts-all \
@@ -40,10 +43,11 @@ RUN curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/lin
         glib2-devel \
         pixman-devel \
         spice-protocol \
-        spice-server-devel \
-        /tmp/ProtonMail-desktop-beta.rpm && \
-        /tmp/ProtonPass.rpm && \
-    systemctl unmask quantix-flatpak-manager.service && \
+        spice-server-devel && \
+        ostree container commit
+
+# Finalise
+RUN systemctl unmask quantix-flatpak-manager.service && \
     systemctl enable quantix-flatpak-manager.service && \
     systemctl enable quantix-system-setup.service && \
     systemctl enable docker.socket && \
