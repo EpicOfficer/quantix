@@ -4,6 +4,7 @@ COPY system_files/shared /
 
 # Install new packages
 RUN curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm && \
+    curl -o /tmp/ProtonPass.rpm https://proton.me/download/PassDesktop/linux/x64/ProtonPass.rpm && \
     rpm-ostree install \
         adobe-source-code-pro-fonts \
         cascadia-code-fonts \
@@ -41,6 +42,7 @@ RUN curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/lin
         spice-protocol \
         spice-server-devel \
         /tmp/ProtonMail-desktop-beta.rpm && \
+        /tmp/ProtonPass.rpm && \
     systemctl unmask quantix-flatpak-manager.service && \
     systemctl enable quantix-flatpak-manager.service && \
     systemctl enable quantix-system-setup.service && \
