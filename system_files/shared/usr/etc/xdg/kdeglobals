@@ -14,7 +14,7 @@ smallestReadableFont=Noto Sans,8,-1,5,50,0,0,0,0,0
 toolBarFont=Noto Sans,9,-1,5,50,0,0,0,0,0
 
 [Icons]
-Theme=Papirus-Dark
+Theme=Papirus
 
 # This is a konsole specific setting belonging to /etc/xdg/konsolerc
 # However we cannot ship this file anymore since upstream konsole ships now this file
