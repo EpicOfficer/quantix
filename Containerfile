@@ -43,7 +43,6 @@ RUN rpm-ostree install \
         glib2-devel \
         pixman-devel \
         spice-protocol \
-        spice-server-devel \
         ddrescue && \
     ostree container commit
 
