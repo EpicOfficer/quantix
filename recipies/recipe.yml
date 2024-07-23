@@ -1,0 +1,79 @@
+name: quantix
+description: My personal distro based on Bazzite with some nice-to-haves for developers from Aurora DX and setup for VFIO by default. Also includes some nice Dracula theming for a pleasant dark colour scheme.
+
+base-image: ghcr.io/ublue-os/bazzite
+image-version: stable
+
+modules:
+  - type: files
+    files:
+      - source: system
+        destination: /
+
+  - type: script
+    snippets:
+      - "curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm"
+
+  - type: rpm-ostree
+    install:
+      - /tmp/ProtonMail-desktop-beta.rpm
+      - adobe-source-code-pro-fonts
+      - cascadia-code-fonts
+      - jetbrains-mono-fonts-all
+      - ibm-plex-mono-fonts
+      - virt-manager
+      - virt-viewer
+      - edk2-ovmf
+      - libvirt
+      - qemu
+      - qemu-char-spice
+      - qemu-device-display-virtio-gpu
+      - qemu-device-display-virtio-vga
+      - qemu-device-usb-redirect
+      - qemu-img
+      - qemu-system-x86-core
+      - qemu-user-binfmt
+      - qemu-user-static
+      - code
+      - docker-ce
+      - docker-ce-cli
+      - docker-buildx-plugin
+      - docker-compose-plugin
+      - podman-compose
+      - podman-tui
+      - podmansh
+      - papirus-icon-theme
+      - libXpresent
+      - ninja-build
+      - nasm
+      - iasl
+      - libuuid-devel
+      - glib2-devel
+      - pixman-devel
+      - spice-protocol
+      - ddrescue
+
+  - type: default-flatpaks
+    notify: false
+    system:
+      install:
+        - com.brave.Browser
+
+  - type: systemd
+    # this example disables automatic flatpak updates and enables a custom service unit for all users
+    system:
+      enabled:
+        - quantix-system-setup.service
+        - docker.socket
+        - libvirtd
+        - swtpm-workaround
+    user:
+      enabled:
+        - quantix-user-setup.service
+        - podman.socket
+
+  - type: script
+    scripts:
+      - qtx-info.sh
+
+  - type: signing
