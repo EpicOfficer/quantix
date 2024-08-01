@@ -9,7 +9,7 @@ elif [ "$(whoami)" = "sddm" ]; then
 fi
 
 # Script version
-readonly QNTX_VER=9
+readonly QNTX_VER=10
 readonly QNTX_VER_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""
@@ -27,6 +27,23 @@ if [[ -n "${QNTX_VER_RAN}" && "${QNTX_VER}" == "${QNTX_VER_RAN}" ]]; then
 fi
 
 dconf load / < /etc/dconf/db/local.d/13-quantix
+
+# Setup JetBrains Toolbox
+pushd "$(mktemp -d)"
+
+# Get the json with latest releases
+curl -sSfL -o releases.json "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release"
+BUILD_VERSION=$(jq -r '.TBA[0].build' ./releases.json)
+DOWNLOAD_LINK=$(jq -r '.TBA[0].downloads.linux.link' ./releases.json)
+CHECKSUM_LINK=$(jq -r '.TBA[0].downloads.linux.checksumLink' ./releases.json)
+
+# Download and extract
+curl -sSfL -O "${DOWNLOAD_LINK}"
+curl -sSfL "${CHECKSUM_LINK}" | sha256sum -c
+tar zxf jetbrains-toolbox-"${BUILD_VERSION}".tar.gz
+
+# Launch
+./jetbrains-toolbox-"${BUILD_VERSION}"/jetbrains-toolbox
 
 # Write the version
 echo "${QNTX_VER}" > "${QNTX_VER_FILE}" || { echo "Error writing to ${QNTX_VER_FILE}." >&2; exit 1; }

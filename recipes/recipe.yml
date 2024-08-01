@@ -52,12 +52,16 @@ modules:
       - pixman-devel
       - spice-protocol
       - ddrescue
+      - sunshine
 
   - type: default-flatpaks
     notify: false
     system:
       install:
         - com.brave.Browser
+        - com.discordapp.Discord
+      remove:
+        - org.mozilla.firefox
 
   - type: systemd
     # this example disables automatic flatpak updates and enables a custom service unit for all users
@@ -67,10 +71,10 @@ modules:
         - docker.socket
         - libvirtd
         - swtpm-workaround
+        - sunshine-workaround
     user:
       enabled:
         - quantix-user-setup.service
-        - podman.socket
 
   - type: script
     scripts:
