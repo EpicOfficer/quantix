@@ -53,6 +53,8 @@ modules:
       - spice-protocol
       - ddrescue
       - sunshine
+    remove:
+      - ptyxis
 
   - type: default-flatpaks
     notify: false
