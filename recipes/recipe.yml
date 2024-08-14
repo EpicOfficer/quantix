@@ -10,6 +10,11 @@ modules:
       - source: system
         destination: /
 
+  - type: script
+    snippets:
+      - "curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm"
+      - "rpm-ostree install /tmp/ProtonMail-desktop-beta.rpm"
+
   - type: rpm-ostree
     install:
       - adobe-source-code-pro-fonts
