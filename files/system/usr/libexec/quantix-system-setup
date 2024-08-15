@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Script version
-readonly QNTX_VER=12
+readonly QNTX_VER=13
 readonly QNTX_VER_DIR="/etc/quantix"
 readonly QNTX_VER_FILE="${QNTX_VER_DIR}/qntx_version"
 QNTX_VER_RAN=""
@@ -22,7 +22,7 @@ CPU_VENDOR=$(grep "vendor_id" "/proc/cpuinfo" | uniq | awk -F": " '{ print $2 }'
 VENDOR_KARG="unset"
 
 # Kargs for KVM
-rpm-ostree kargs --append-if-missing="kvm.ignore_msrs=1" --append-if-missing="kvm.report_ignored_msrs=0"
+rpm-ostree kargs --append-if-missing="kvm.ignore_msrs=1" --append-if-missing="kvm.report_ignored_msrs=0" --append-if-missing="preempt=voluntary"
 
 # Setup VFIO
 echo 'add_drivers+=" vfio vfio_iommu_type1 vfio-pci "' | sudo tee /etc/dracut.conf.d/vfio.conf
