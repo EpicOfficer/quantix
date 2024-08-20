@@ -39,9 +39,6 @@ modules:
       - docker-ce-cli
       - docker-buildx-plugin
       - docker-compose-plugin
-      - podman-compose
-      - podman-tui
-      - podmansh
       - papirus-icon-theme
       - libXpresent
       - ninja-build
