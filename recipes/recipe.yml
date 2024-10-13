@@ -17,6 +17,7 @@ modules:
 
   - type: rpm-ostree
     install:
+      - kvantum
       - adobe-source-code-pro-fonts
       - cascadia-code-fonts
       - jetbrains-mono-fonts-all
