@@ -22,6 +22,7 @@ modules:
       - cascadia-code-fonts
       - jetbrains-mono-fonts-all
       - ibm-plex-mono-fonts
+      - cockpit-machines
       - virt-manager
       - virt-viewer
       - edk2-ovmf
@@ -60,6 +61,7 @@ modules:
       install:
         - com.brave.Browser
         - com.discordapp.Discord
+        - org.cockpit_project.CockpitClient
       remove:
         - org.mozilla.firefox
 
