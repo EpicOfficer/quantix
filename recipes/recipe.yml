@@ -15,6 +15,11 @@ modules:
       - "curl -o /tmp/ProtonMail-desktop-beta.rpm https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm"
       - "rpm-ostree install /tmp/ProtonMail-desktop-beta.rpm"
 
+  - type: script
+    snippets:
+      - "curl -o /tmp/DisplayLink.rpm https://github.com/displaylink-rpm/displaylink-rpm/releases/download/v6.1.0/fedora-41-displaylink-1.14.7-2.github_evdi.x86_64.rpm"
+      - "rpm-ostree install /tmp/DisplayLink.rpm"
+
   - type: rpm-ostree
     install:
       - kvantum
