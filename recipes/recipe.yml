@@ -66,14 +66,12 @@ modules:
         - org.mozilla.firefox
 
   - type: systemd
-    # this example disables automatic flatpak updates and enables a custom service unit for all users
     system:
       enabled:
         - quantix-system-setup.service
         - docker.socket
         - libvirtd
         - swtpm-workaround
-        - sunshine-workaround
     user:
       enabled:
         - quantix-user-setup.service
