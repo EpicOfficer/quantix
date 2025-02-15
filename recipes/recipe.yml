@@ -52,6 +52,7 @@ modules:
       - spice-protocol
       - ddrescue
       - sunshine
+      - konsole
     remove:
       - ptyxis
 
@@ -62,7 +63,6 @@ modules:
         - com.brave.Browser
         - com.discordapp.Discord
         - org.cockpit_project.CockpitClient
-        - org.kde.konsole.desktop
         - com.vysp3r.ProtonPlus
       remove:
         - org.mozilla.firefox
