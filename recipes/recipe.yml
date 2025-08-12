@@ -52,14 +52,15 @@ modules:
       - ptyxis
 
   - type: default-flatpaks
-    notify: false
-    system:
-      install:
-        - com.vivaldi.Vivaldi
-        - com.vysp3r.ProtonPlus
-      remove:
-        - org.mozilla.firefox
-        - net.davidotek.pupgui2
+    configurations:
+      - notify: false
+        scope: system
+        install:
+          - com.vivaldi.Vivaldi
+          - com.vysp3r.ProtonPlus
+        remove:
+          - org.mozilla.firefox
+          - net.davidotek.pupgui2
 
   - type: systemd
     system:
