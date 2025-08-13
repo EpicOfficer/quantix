@@ -12,8 +12,8 @@ modules:
 
   - type: rpm-ostree
     repos:
-      - https://download.docker.com/linux/fedora/$releasever/$basearch/stable
-      - https://packages.microsoft.com/yumrepos/vscode
+      - https://download.docker.com/linux/fedora/docker-ce.repo
+      - vscode.repo                                              # OK: local file you provide (see below)
     keys:
       - https://download.docker.com/linux/fedora/gpg
       - https://packages.microsoft.com/keys/microsoft.asc
