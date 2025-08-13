@@ -11,6 +11,12 @@ modules:
         destination: /
 
   - type: rpm-ostree
+    repos:
+      - https://download.docker.com/linux/fedora/$releasever/$basearch/stable
+      - https://packages.microsoft.com/yumrepos/vscode
+    keys:
+      - https://download.docker.com/linux/fedora/gpg
+      - https://packages.microsoft.com/keys/microsoft.asc
     install:
       - kvantum
       - adobe-source-code-pro-fonts
@@ -77,5 +83,7 @@ modules:
     scripts:
       - install-dracula.sh
       - qtx-info.sh
+
+  - type: initramfs
 
   - type: signing
