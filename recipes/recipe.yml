@@ -62,7 +62,7 @@ modules:
       - notify: false
         scope: system
         install:
-          - com.vivaldi.Vivaldi
+          - app.zen_browser.zen
           - com.vysp3r.ProtonPlus
         remove:
           - org.mozilla.firefox
