@@ -13,10 +13,12 @@ modules:
   - type: rpm-ostree
     repos:
       - https://download.docker.com/linux/fedora/docker-ce.repo
-      - vscode.repo                                              # OK: local file you provide (see below)
+      - vscode.repo
+      - https://copr.fedorainfracloud.org/coprs/lizardbyte/stable/repo/fedora-43/lizardbyte-stable-fedora-43.repo
     keys:
       - https://download.docker.com/linux/fedora/gpg
       - https://packages.microsoft.com/keys/microsoft.asc
+      - https://download.copr.fedorainfracloud.org/results/lizardbyte/stable/pubkey.gpg
     install:
       - kvantum
       - adobe-source-code-pro-fonts
@@ -52,7 +54,7 @@ modules:
       - pixman-devel
       - spice-protocol
       - ddrescue
-      - sunshine
+      - Sunshine
       - konsole
     remove:
       - ptyxis
