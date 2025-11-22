@@ -13,8 +13,12 @@ modules:
   - type: rpm-ostree
     repos:
       - https://download.docker.com/linux/fedora/docker-ce.repo
+      - https://copr.fedorainfracloud.org/coprs/lizardbyte/stable/repo/fedora-%OS_VERSION%/lizardbyte-stable-fedora-%OS_VERSION%.repo
+      - https://copr.fedorainfracloud.org/coprs/codifryed/CoolerControl/repo/fedora-%OS_VERSION%/codifryed-CoolerControl-fedora-%OS_VERSION%.repo
       - vscode.repo
-      - https://copr.fedorainfracloud.org/coprs/lizardbyte/stable/repo/fedora-43/lizardbyte-stable-fedora-43.repo
+      - terra.repo
+      - terra-mesa.repo
+      - terra-extras.repo
     keys:
       - https://download.docker.com/linux/fedora/gpg
       - https://packages.microsoft.com/keys/microsoft.asc
@@ -91,6 +95,7 @@ modules:
   - type: script
     scripts:
       - install-dracula.sh
+      - install-discord-wrapper.sh
       - qtx-info.sh
 
   - type: initramfs
