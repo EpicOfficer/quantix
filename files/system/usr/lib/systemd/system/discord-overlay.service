@@ -6,9 +6,10 @@ Requires=local-fs.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStartPre=/usr/bin/mkdir -p /var/lib/overlays/discord/upper /var/lib/overlays/discord/work /opt/discord
+# create merged + upper + work dirs every boot
+ExecStartPre=/usr/bin/mkdir -p /opt/discord /var/lib/overlays/discord/upper /var/lib/overlays/discord/work
 ExecStart=/usr/bin/mount -t overlay overlay \
-  -o lowerdir=/usr/share/discord:/usr/lib64/discord:/usr/lib/discord,upperdir=/var/lib/overlays/discord/upper,workdir=/var/lib/overlays/discord/work \
+  -o lowerdir=/usr/lib/discord,upperdir=/var/lib/overlays/discord/upper,workdir=/var/lib/overlays/discord/work \
   /opt/discord
 ExecStop=/usr/bin/umount /opt/discord
 

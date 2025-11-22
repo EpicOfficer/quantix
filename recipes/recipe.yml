@@ -83,6 +83,7 @@ modules:
     system:
       enabled:
         - quantix-system-setup.service
+        - discord-overlay.service
         - docker.socket
         - libvirtd
         - swtpm-workaround
