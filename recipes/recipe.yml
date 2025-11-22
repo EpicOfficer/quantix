@@ -20,6 +20,11 @@ modules:
       - https://packages.microsoft.com/keys/microsoft.asc
       - https://download.copr.fedorainfracloud.org/results/lizardbyte/stable/pubkey.gpg
     install:
+      - discord
+      - coolercontrol
+      - dotnet-sdk-9.0
+      - dotnet-sdk-10.0
+      - liquidctl
       - kvantum
       - adobe-source-code-pro-fonts
       - cascadia-code-fonts
@@ -77,8 +82,10 @@ modules:
         - docker.socket
         - libvirtd
         - swtpm-workaround
+        - tailscaled.service
     user:
       enabled:
+        - sunshine.service
         - quantix-user-setup.service
 
   - type: script
