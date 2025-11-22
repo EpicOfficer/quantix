@@ -63,6 +63,10 @@ modules:
     remove:
       - ptyxis
 
+  - type: script
+    snippets:
+      - "test -L /usr/bin/discord && rm -f /usr/bin/discord"
+
   - type: files
     files:
       - source: system
