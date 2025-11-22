@@ -1,0 +1,16 @@
+[Unit]
+Description=Overlay mount for Discord (patched upperdir)
+After=local-fs.target
+Requires=local-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/usr/bin/mkdir -p /var/lib/overlays/discord/upper /var/lib/overlays/discord/work /opt/discord
+ExecStart=/usr/bin/mount -t overlay overlay \
+  -o lowerdir=/usr/share/discord:/usr/lib64/discord:/usr/lib/discord,upperdir=/var/lib/overlays/discord/upper,workdir=/var/lib/overlays/discord/work \
+  /opt/discord
+ExecStop=/usr/bin/umount /opt/discord
+
+[Install]
+WantedBy=multi-user.target
