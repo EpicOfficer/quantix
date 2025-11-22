@@ -5,11 +5,6 @@ base-image: ghcr.io/ublue-os/bazzite
 image-version: stable
 
 modules:
-  - type: files
-    files:
-      - source: system
-        destination: /
-
   - type: rpm-ostree
     repos:
       - https://download.docker.com/linux/fedora/docker-ce.repo
@@ -68,6 +63,11 @@ modules:
     remove:
       - ptyxis
 
+  - type: files
+    files:
+      - source: system
+        destination: /
+
   - type: default-flatpaks
     configurations:
       - notify: false
@@ -96,7 +96,6 @@ modules:
   - type: script
     scripts:
       - install-dracula.sh
-      - install-discord-wrapper.sh
       - qtx-info.sh
 
   - type: initramfs
