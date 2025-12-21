@@ -7,7 +7,6 @@ image-version: stable
 modules:
   - type: rpm-ostree
     repos:
-      - https://download.docker.com/linux/fedora/docker-ce.repo
       - https://copr.fedorainfracloud.org/coprs/lizardbyte/stable/repo/fedora-%OS_VERSION%/lizardbyte-stable-fedora-%OS_VERSION%.repo
       - https://copr.fedorainfracloud.org/coprs/codifryed/CoolerControl/repo/fedora-%OS_VERSION%/codifryed-CoolerControl-fedora-%OS_VERSION%.repo
       - vscode.repo
@@ -15,7 +14,6 @@ modules:
       - terra-mesa.repo
       - terra-extras.repo
     keys:
-      - https://download.docker.com/linux/fedora/gpg
       - https://packages.microsoft.com/keys/microsoft.asc
       - https://download.copr.fedorainfracloud.org/results/lizardbyte/stable/pubkey.gpg
     install:
@@ -29,7 +27,6 @@ modules:
       - cascadia-code-fonts
       - jetbrains-mono-fonts-all
       - ibm-plex-mono-fonts
-      - cockpit-machines
       - virt-manager
       - virt-viewer
       - edk2-ovmf
@@ -44,10 +41,6 @@ modules:
       - qemu-user-binfmt
       - qemu-user-static
       - code
-      - docker-ce
-      - docker-ce-cli
-      - docker-buildx-plugin
-      - docker-compose-plugin
       - papirus-icon-theme
       - libXpresent
       - ninja-build
@@ -88,7 +81,6 @@ modules:
       enabled:
         - quantix-system-setup.service
         - discord-overlay.service
-        - docker.socket
         - libvirtd
         - swtpm-workaround
         - tailscaled.service
