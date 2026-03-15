@@ -3,7 +3,6 @@ description: My personal distro based on Bazzite with some nice-to-haves for dev
 
 base-image: ghcr.io/ublue-os/bazzite
 image-version: stable
-
 modules:
   - type: dnf
     repos:
@@ -17,7 +16,7 @@ modules:
         - codifryed/CoolerControl
       keys:
         - https://packages.microsoft.com/keys/microsoft.asc
-        - https://download.copr.fedorainfracloud.org/results/lizardbyte/stable/pu$
+        - https://download.copr.fedorainfracloud.org/results/lizardbyte/stable/pubkey.gpg
     install:
       packages:
         - discord
