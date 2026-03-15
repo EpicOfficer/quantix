@@ -18,7 +18,8 @@ modules:
       keys:
         - https://packages.microsoft.com/keys/microsoft.asc
         - https://download.copr.fedorainfracloud.org/results/lizardbyte/stable/pu$
-      install:
+    install:
+      packages:
         - discord
         - coolercontrol
         - dotnet-sdk-9.0
@@ -55,7 +56,8 @@ modules:
         - ddrescue
         - Sunshine
         - konsole
-      remove:
+    remove:
+      packages:
         - ptyxis
 
   - type: script
