@@ -89,7 +89,7 @@ modules:
         - tailscaled.service
     user:
       enabled:
-        - sunshine.service
+        - sunshine
         - quantix-user-setup.service
 
   - type: script
