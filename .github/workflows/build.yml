@@ -34,5 +34,5 @@ jobs:
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}  
           maximize_build_space: true
-          rechunk: false
-          use_cache: false
+          rechunk: true
+          use_cache: true
