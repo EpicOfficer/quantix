@@ -1,10 +1,10 @@
 [KDE]
-LookAndFeelPackage=org.kde.breezedark.desktop
-widgetStyle=Breeze
+LookAndFeelPackage=Dracula
+widgetStyle=kvantum
 SingleClick=false
 
 [General]
-ColorScheme=DraculaPurple
+ColorScheme=Dracula
 TerminalApplication=konsole
 TerminalService=org.kde.konsole.desktop
 fixed=Fira Code,10,-1,5,50,0,0,0,0,0

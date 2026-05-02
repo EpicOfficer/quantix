@@ -1,8 +1,8 @@
 [General]
-ColorScheme=DraculaPurple
+ColorScheme=Dracula
 
 [Icons]
 Theme=Papirus
 
 [KDE]
-widgetStyle=Breeze
+widgetStyle=kvantum

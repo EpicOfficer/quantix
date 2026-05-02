@@ -26,7 +26,9 @@ if [[ -n "${QNTX_VER_RAN}" && "${QNTX_VER}" == "${QNTX_VER_RAN}" ]]; then
     exit 0
 fi
 
-dconf load / < /etc/dconf/db/local.d/13-quantix
+for dconf_defaults in /etc/dconf/db/local.d/*; do
+    [ -f "$dconf_defaults" ] && dconf load / < "$dconf_defaults"
+done
 
 cp /usr/share/applications/org.kde.konsole.desktop $HOME/.local/share/applications/org.kde.konsole.desktop
 sed -i '/NoDisplay=true/d' $HOME/.local/share/applications/org.kde.konsole.desktop
