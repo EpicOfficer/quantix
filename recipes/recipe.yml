@@ -82,7 +82,6 @@ modules:
         - tailscaled.service
     user:
       enabled:
-        - app-dev.lizardbyte.app.Sunshine.service
         - quantix-user-setup.service
 
   - type: script
