@@ -16,7 +16,6 @@ modules:
         - codifryed/CoolerControl
       keys:
         - https://packages.microsoft.com/keys/microsoft.asc
-        - https://download.copr.fedorainfracloud.org/results/lizardbyte/stable/pubkey.gpg
     install:
       packages:
         - discord
@@ -31,7 +30,6 @@ modules:
         - ibm-plex-mono-fonts
         - virt-manager
         - virt-viewer
-        - edk2-ovmf
         - libvirt
         - qemu
         - qemu-char-spice
@@ -53,11 +51,6 @@ modules:
         - pixman-devel
         - spice-protocol
         - ddrescue
-        - Sunshine
-        - konsole
-    remove:
-      packages:
-        - ptyxis
 
   - type: script
     snippets:
