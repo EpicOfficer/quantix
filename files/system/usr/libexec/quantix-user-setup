@@ -30,9 +30,6 @@ for dconf_defaults in /etc/dconf/db/local.d/*; do
     [ -f "$dconf_defaults" ] && dconf load / < "$dconf_defaults"
 done
 
-cp /usr/share/applications/org.kde.konsole.desktop $HOME/.local/share/applications/org.kde.konsole.desktop
-sed -i '/NoDisplay=true/d' $HOME/.local/share/applications/org.kde.konsole.desktop
-
 # Setup JetBrains Toolbox
 curl -fsSL https://raw.githubusercontent.com/nagygergo/jetbrains-toolbox-install/master/jetbrains-toolbox.sh | bash
 
