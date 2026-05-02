@@ -8,11 +8,11 @@ cat > /usr/share/quantix-os/image-info.json <<EOF
 {
   "image-name": "quantix",
   "image-flavor": "main",
-  "image-vendor": "epicofficer",
-  "image-ref": "ostree-image-signed:docker://ghcr.io/epicofficer/quantix",
+  "image-vendor": "joshcollis",
+  "image-ref": "ostree-image-signed:docker://ghcr.io/joshcollis/quantix",
   "image-tag": "stable",
   "image-branch": "main",
   "base-image-name": "Bazzite",
-  "fedora-version": "40"
+  "fedora-version": "44"
 }
 EOF
