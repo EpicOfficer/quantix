@@ -64,6 +64,14 @@ modules:
     configurations:
       - notify: false
         scope: system
+        repo:
+          name: flathub
+          title: Flathub
+          # BlueBuild validates the exact default URL against flathub.org/api/v2/stats
+          # during the image build. Use Flathub's canonical redirect URL so the
+          # runtime remote is unchanged, but transient stats API failures don't
+          # break CI.
+          url: https://flathub.org/repo/flathub.flatpakrepo
         install:
           - app.zen_browser.zen
           - com.vysp3r.ProtonPlus
