@@ -53,7 +53,7 @@ modules:
 
   - type: script
     snippets:
-      - "test -L /usr/bin/discord && rm -f /usr/bin/discord"
+      - "test ! -L /usr/bin/discord || rm -f /usr/bin/discord"
 
   - type: files
     files:
