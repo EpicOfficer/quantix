@@ -1,0 +1,84 @@
+name: clean-up-old-images
+
+on:
+  schedule:
+    - cron: '15 6 * * 0'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: List deletions without removing package versions
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  cleanup:
+    name: Remove package versions older than 21 days
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old Quantix image versions
+        uses: actions/github-script@v8
+        env:
+          DRY_RUN: ${{ inputs.dry_run || false }}
+          RETENTION_DAYS: '21'
+          PACKAGE_NAME: quantix
+        with:
+          retries: 3
+          script: |
+            const owner = context.repo.owner;
+            const packageName = process.env.PACKAGE_NAME;
+            const retentionDays = Number(process.env.RETENTION_DAYS);
+            const dryRun = process.env.DRY_RUN === 'true';
+            const protectedTags = new Set(['latest', 'latest-cache', '43', '44']);
+            const cutoff = Date.now() - retentionDays * 24 * 60 * 60 * 1000;
+
+            const versions = await github.paginate(
+              'GET /users/{username}/packages/{package_type}/{package_name}/versions',
+              {
+                username: owner,
+                package_type: 'container',
+                package_name: packageName,
+                per_page: 100,
+              },
+            );
+
+            const candidates = versions.filter((version) => {
+              const tags = version.metadata?.container?.tags ?? [];
+              const isProtected = tags.some((tag) => protectedTags.has(tag));
+              return !isProtected && Date.parse(version.updated_at) < cutoff;
+            });
+
+            core.info(
+              `Found ${versions.length} versions; ${candidates.length} are older than ` +
+              `${retentionDays} days and do not carry a protected tag.`,
+            );
+
+            for (const version of candidates) {
+              const tags = version.metadata?.container?.tags ?? [];
+              core.info(
+                `${dryRun ? 'Would delete' : 'Deleting'} ${version.id} ` +
+                `(${version.updated_at}; tags: ${tags.join(', ') || 'none'})`,
+              );
+              if (!dryRun) {
+                await github.request(
+                  'DELETE /users/{username}/packages/{package_type}/{package_name}/versions/{package_version_id}',
+                  {
+                    username: owner,
+                    package_type: 'container',
+                    package_name: packageName,
+                    package_version_id: version.id,
+                  },
+                );
+              }
+            }
+
+            await core.summary
+              .addHeading('Quantix package retention')
+              .addRaw(`Versions inspected: ${versions.length}\n`)
+              .addRaw(`${dryRun ? 'Would delete' : 'Deleted'}: ${candidates.length}\n`)
+              .addRaw(`Retention: ${retentionDays} days\n`)
+              .write();
